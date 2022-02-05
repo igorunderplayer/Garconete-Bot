@@ -1,5 +1,5 @@
 import { CommandInteraction, ApplicationCommandData } from 'discord.js'
-import Garconete from './Client'
+import GarconeteClient from './Client'
 
 type CommandData = ApplicationCommandData & {
   description: string
@@ -9,7 +9,7 @@ type CommandData = ApplicationCommandData & {
 }
 
 export default abstract class Command {
-  client: Garconete | undefined;
+  client: GarconeteClient;
 
   public name: CommandData['name']
   public description: CommandData['description']

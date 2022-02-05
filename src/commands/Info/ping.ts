@@ -1,18 +1,20 @@
 import { CommandInteraction } from 'discord.js'
-import Garconete from '../../structures/Client'
+import GarconeteClient from '../../structures/Client'
 import Command from '../../structures/Command'
 
 export default class Ping extends Command {
-  constructor (client: Garconete) {
+  constructor (client: GarconeteClient) {
     super({
       name: 'ping',
-      description: 'manda a minha latencia'
+      description: 'manda a minha latencia',
+      testing: true
     })
 
     this.client = client
   }
 
   async run (interaction: CommandInteraction) {
+    console.log('ping')
     interaction.reply('minha latencia')
   }
 }
