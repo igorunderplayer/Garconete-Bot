@@ -1,13 +1,18 @@
-import { Command } from '../../@types'
+import { CommandInteraction } from 'discord.js'
+import Garconete from '../../structures/Client'
+import Command from '../../structures/Command'
 
-const command: Command = {
-  name: 'ping',
-  description: 'Responde com minha latencia',
+export default class Ping extends Command {
+  constructor (client: Garconete) {
+    super({
+      name: 'ping',
+      description: 'manda a minha latencia'
+    })
 
-  testing: true,
-  run: async (interaction) => {
-    interaction.reply('mina latencia')
+    this.client = client
+  }
+
+  async run (interaction: CommandInteraction) {
+    interaction.reply('minha latencia')
   }
 }
-
-export default command;

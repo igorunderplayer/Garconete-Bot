@@ -11,8 +11,8 @@ client.on('ready', () => {
 
 client.on('interactionCreate', async (interaction) => {
   console.log('[Event] interactionCreate')
-  if(interaction.isCommand()) {
-    const command = client.commands.find(cmd => cmd.name == interaction.command?.name)
+  if (interaction.isCommand()) {
+    const command = client.commands.find(cmd => cmd.name === interaction.command?.name)
     await command?.run(interaction)
   }
 })
