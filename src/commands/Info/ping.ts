@@ -6,8 +6,7 @@ export default class Ping extends Command {
   constructor (client: GarconeteClient) {
     super({
       name: 'ping',
-      description: 'manda a minha latencia',
-      testing: true
+      description: 'manda a minha latencia'
     })
 
     this.client = client
