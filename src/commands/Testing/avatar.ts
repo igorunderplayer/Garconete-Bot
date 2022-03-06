@@ -2,6 +2,8 @@ import { CommandInteraction, MessageEmbed } from 'discord.js'
 import GarconeteClient from '../../structures/Client'
 import Command from '../../structures/Command'
 
+import placeholders from '../../Util/placeholders'
+
 export default class Avatar extends Command {
   constructor (client: GarconeteClient) {
     super({
@@ -21,9 +23,15 @@ export default class Avatar extends Command {
   async run (interaction: CommandInteraction) {
     const user = interaction.options.getUser('user') ?? interaction.user
     const avatar = user.displayAvatarURL({ size: 2048 })
+    const phrase = this.client.getCommandPhrase(this.name, 'embed.title', interaction.locale)
+    const title = placeholders({
+      user: user.username
+    }, phrase)
+
+    console.log(interaction.locale)
 
     const embed = new MessageEmbed()
-      .setTitle(`Avatar de ${user.username}`)
+      .setTitle(title)
       .setURL(avatar)
       .setImage(avatar)
       .setColor('#C54C65')

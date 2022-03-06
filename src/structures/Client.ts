@@ -3,6 +3,8 @@ import { readdir } from 'fs/promises'
 
 import Command from './Command'
 
+import messages from '../messages.json'
+
 export default class GarconeteClient extends Client {
   commands: Command[]
 
@@ -32,6 +34,16 @@ export default class GarconeteClient extends Client {
     }
 
     this.application?.commands.set(this.commands.filter(cmd => !cmd.testing))
-    this.guilds.cache.get('672933215836569610')?.commands.set(this.commands.filter(cmd => cmd.testing))
+    const devGuilds = process.env.DEV_GUILDS.split(' ')
+    devGuilds.forEach(guildId => {
+      const guild = this.guilds.cache.get(guildId)
+      console.log(`[Bot] Registering testing commands to guild ${guild.name}`)
+      guild.commands.set(this.commands.filter(cmd => cmd.testing))
+    })
+  }
+
+  getCommandPhrase (command: string, prop: string, locale: string) {
+    const phrase = messages.commands[command][prop]
+    return phrase[locale] ?? phrase['en-US']
   }
 }

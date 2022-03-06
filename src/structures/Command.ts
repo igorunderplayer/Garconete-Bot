@@ -19,6 +19,10 @@ export default abstract class Command {
 
   constructor (data: CommandData) {
     Object.assign(this, data)
+
+    if(this.testing) {
+      this.description = '[Testing] ' + this.description
+    }
   }
 
   abstract run(interaction: CommandInteraction): Promise<any> | any

@@ -2,7 +2,7 @@ import 'dotenv/config'
 
 import Client from './structures/Client'
 const client = new Client({
-  intents: 1
+  intents: 513
 })
 
 client.loadEvents('src/events')

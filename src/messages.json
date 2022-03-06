@@ -1,0 +1,30 @@
+{
+  "commands": {
+    "ping": {
+      "reply": {
+        "en-US": "pong! \n ws latency: %{wsLatency%}ms",
+        "pt-BR": "pong! \n latencia ws: %{wsLatency%}ms"
+      }
+    },
+    "botinfo": {
+      "embed.title": {
+        "en-US": "My informations",
+        "pt-BR": "Minhas informações"
+      },
+      "embed.field[memory].name": {
+        "en-US": "🥶 Memory usage",
+        "pt-BR": "🥶 Uso de memoria"
+      },
+      "embed.field[statistics].name": {
+        "en-US": "My statistics",
+        "pt-BR": "Minhas estatisticas"
+      }
+    },
+    "avatar": {
+      "embed.title": {
+        "en-US": "%{user%}'s avatar",
+        "pt-BR": "avatar de %{user%}"
+      }
+    }
+  }
+}
