@@ -1,11 +1,18 @@
-import { CommandInteraction, ApplicationCommandData } from 'discord.js'
+import { CommandInteraction, ApplicationCommandData, ApplicationCommandSubCommandData } from 'discord.js'
 import GarconeteClient from './Client'
+
+type SubCommand = ApplicationCommandSubCommandData & {
+
+}
 
 type CommandData = ApplicationCommandData & {
   description: string
 
   testing?: boolean
   nsfw?: boolean
+
+  subCommands?: any
+  handleSubCommands?: boolean
 }
 
 export default abstract class Command {
@@ -17,7 +24,7 @@ export default abstract class Command {
   public testing: CommandData['testing']
   public nsfw: CommandData['nsfw']
 
-  constructor (data: CommandData) {
+  constructor (data: CommandData | SubCommand) {
     Object.assign(this, data)
 
     if (this.testing) {
@@ -25,5 +32,5 @@ export default abstract class Command {
     }
   }
 
-  abstract run(interaction: CommandInteraction): Promise<any> | any
+  abstract run?(interaction: CommandInteraction): Promise<any> | any
 }

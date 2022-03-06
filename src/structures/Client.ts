@@ -30,7 +30,17 @@ export default class GarconeteClient extends Client {
       const commandFiles = await readdir(`${path}/${file.name}`)
       for await (const commandFile of commandFiles) {
         const { default: Command } = await import(process.cwd() + `/${path}/${file.name}/${commandFile}`)
-        this.commands.push(new Command(this))
+        const command = new Command(this)
+
+        if (command.handleSubCommands) {
+          const subCommandFiles = (await readdir(process.cwd() + `/${path}/${file.name}/${commandFile}/`)).filter(f => f !== 'index.ts')
+          for await (const subCommandFile of subCommandFiles) {
+            const { default: SubCommand } = await import(process.cwd() + `/${path}/${file.name}/${commandFile}/${subCommandFile}`)
+            const subCommand = new SubCommand(this)
+            command.options.push(subCommand)
+          }
+        }
+        this.commands.push(command)
       }
     }
 

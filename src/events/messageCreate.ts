@@ -23,6 +23,7 @@ export default class MessageCreate extends Event<'messageCreate'> {
 
       if (!cmd) message.reply('Use "/" para ver a lista de comandos (slashs meus e de outros bots)')
       if (cmd === 'die') message.reply(':flushed: no')
+      if (cmd === 'sexo') message.reply('a noite toda bb rs :fire::smirk:')
       if (cmd === 'eval' && devUsers.includes(message.author.id)) {
         const clean = (text: any): any => {
           if (typeof text === 'string') {
