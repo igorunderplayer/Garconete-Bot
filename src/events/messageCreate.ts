@@ -29,7 +29,7 @@ export default class MessageCreate extends Event<'messageCreate'> {
             result = await result
 
           // if(typeof result == 'object')
-            result = inspect(result, { depth: 1 })
+            result = inspect(result, { depth: 0 })
 
           const embed = new MessageEmbed()
             .setTitle('Resultado:')
