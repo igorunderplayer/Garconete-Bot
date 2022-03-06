@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --ignore-watch node_modules src/index.ts"
+    "dev": "ts-node-dev --ignore-watch node_modules --transpile-only --respawn src/index.ts"
   },
   "devDependencies": {
     "@types/node": "^17.0.15",

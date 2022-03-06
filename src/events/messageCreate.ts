@@ -21,7 +21,18 @@ export default class MessageCreate extends Event<'messageCreate'> {
     ) {
       const [, cmd, ...args] = message.content.trim().split(' ')
       
+      if(!cmd) message.reply('Use "/" para ver a lista de comandos (slashs meus e de outros bots)')
+      if(cmd == 'die') message.reply(':flushed: no')
       if(cmd == 'eval' && devUsers.includes(message.author.id)) {
+        const clean = (text: any): any => {
+          if (typeof text === 'string')
+            text = text
+              .replace(/`/g, `\`${String.fromCharCode(8203)}`)
+              .replace(/@/g, `@${String.fromCharCode(8203)}`)
+              .replace(new RegExp(process.env.TOKEN, 'gi'), '***')
+
+          return text;
+        }
         try {
           let result = eval(args.join(' '))
 
@@ -29,7 +40,7 @@ export default class MessageCreate extends Event<'messageCreate'> {
             result = await result
 
           // if(typeof result == 'object')
-            result = inspect(result, { depth: 0 })
+            result = clean(inspect(result, { depth: 0 }))
 
           const embed = new MessageEmbed()
             .setTitle('Resultado:')
