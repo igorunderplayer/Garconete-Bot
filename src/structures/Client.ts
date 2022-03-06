@@ -26,7 +26,7 @@ export default class GarconeteClient extends Client {
   async loadCommands (path = 'src/commands') {
     const files = await readdir(path, { withFileTypes: true })
     for await (const file of files) {
-      if(!file.isDirectory()) return
+      if (!file.isDirectory()) return
       const commandFiles = await readdir(`${path}/${file.name}`)
       for await (const commandFile of commandFiles) {
         const { default: Command } = await import(process.cwd() + `/${path}/${file.name}/${commandFile}`)

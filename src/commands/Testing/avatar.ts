@@ -28,8 +28,6 @@ export default class Avatar extends Command {
       user: user.username
     }, phrase)
 
-    console.log(interaction.locale)
-
     const embed = new MessageEmbed()
       .setTitle(title)
       .setURL(avatar)

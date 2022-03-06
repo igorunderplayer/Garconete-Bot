@@ -14,8 +14,8 @@ export default class Ping extends Command {
   }
 
   async run (interaction: CommandInteraction) {
-    const locale = interaction.locale;
-    const phrase = this.client.getCommandPhrase(this.name, 'reply', locale);
+    const locale = interaction.locale
+    const phrase = this.client.getCommandPhrase(this.name, 'reply', locale)
     const reply = placeholders({
       wsLatency: ~~(this.client.ws.ping)
     }, phrase)
