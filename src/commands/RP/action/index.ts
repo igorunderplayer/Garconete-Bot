@@ -11,6 +11,8 @@ export default class Actions extends Command {
       handleSubCommands: true,
       options: []
     })
+
+    this.client = client
   }
 
   async run (interaction: CommandInteraction) {
@@ -18,6 +20,11 @@ export default class Actions extends Command {
 
     if (subCommand === 'hug') {
       const Commando = (await import('./hug')).default
+      new Commando(this.client).run(interaction)
+    }
+
+    if(subCommand === 'kiss') {
+      const Commando = (await import('./kiss')).default
       new Commando(this.client).run(interaction)
     }
   }

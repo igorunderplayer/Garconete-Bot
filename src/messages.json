@@ -18,6 +18,10 @@
       "embed.field[statistics].name": {
         "en-US": "My statistics",
         "pt-BR": "Minhas estatisticas"
+      },
+      "embed.field[uptime].name": {
+        "en-US": "🕐 Uptime",
+        "pt-BR": "🕐 Tempo ativo"
       }
     },
     "avatar": {

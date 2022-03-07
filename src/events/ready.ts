@@ -12,6 +12,12 @@ export default class Ready extends Event<'ready'> {
 
   async handle () {
     await this.client.loadCommands()
-    console.log('[Bot] Ready!')
+    console.log(`[Bot] Ready! | Logged as ${this.client.user.tag} (${this.client.user.id})`)
+
+    this.client.user.setStatus('idle')
+    this.client.user.setActivity({
+      name: 'sexo',
+      type: 'WATCHING'
+    })
   }
 }

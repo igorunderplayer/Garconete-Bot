@@ -21,6 +21,7 @@ export default class Hug extends Command {
 
   async run (interaction: CommandInteraction) {
     const user = interaction.options.getUser('member')
-    interaction.reply(`${interaction.user} abasou ${user.username}`)
+
+    interaction.reply(`${interaction.user} abrasou ${user.username}`)
   }
 }
