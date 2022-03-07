@@ -9,6 +9,6 @@ const client = new Client({
   })
 })
 
-client.loadEvents('src/events')
+client.loadEvents()
 
 client.login(process.env.TOKEN)
