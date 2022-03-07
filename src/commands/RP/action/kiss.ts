@@ -3,7 +3,7 @@ import GarconeteClient from '../../../structures/Client'
 import { CommandInteraction } from 'discord.js'
 
 export default class Kiss extends Command {
-  constructor(client: GarconeteClient) {
+  constructor (client: GarconeteClient) {
     super({
       name: 'kiss',
       description: 'beja um usuario',
@@ -19,10 +19,10 @@ export default class Kiss extends Command {
     this.client = client
   }
 
-  async run(interaction: CommandInteraction) {
+  async run (interaction: CommandInteraction) {
     const user = interaction.options.getUser('user')
     // "easter egg"
-    if(user.id === this.client.user.id) {
+    if (user.id === this.client.user.id) {
       interaction.reply(`:flushed: ${interaction.user} acabou de me dar um beij....`)
       return
     }

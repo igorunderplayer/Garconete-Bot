@@ -23,7 +23,7 @@ export default class Actions extends Command {
       new Commando(this.client).run(interaction)
     }
 
-    if(subCommand === 'kiss') {
+    if (subCommand === 'kiss') {
       const Commando = (await import('./kiss')).default
       new Commando(this.client).run(interaction)
     }

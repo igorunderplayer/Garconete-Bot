@@ -34,8 +34,9 @@ export default class GarconeteClient extends Client {
         const command = new Command(this)
 
         if (command.handleSubCommands) {
-          const subCommandFiles = (await readdir(join(__dirname, '..', path, file.name, commandFile))).filter(f => f !== 'index.ts')
+          const subCommandFiles = (await readdir(join(__dirname, '..', path, file.name, commandFile))).filter(f => f !== 'index.ts' && f !== 'index.js')
           for await (const subCommandFile of subCommandFiles) {
+            console.log(subCommandFile)
             const { default: SubCommand } = await import(join(__dirname, '..', path, file.name, commandFile, subCommandFile))
             const subCommand = new SubCommand(this)
             command.options.push(subCommand)
