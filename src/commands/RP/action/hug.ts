@@ -1,16 +1,17 @@
 import { CommandInteraction } from 'discord.js'
 import GarconeteClient from '../../../structures/Client'
 import Command from '../../../structures/Command'
+import applyPlaceholders from '../../../Util/placeholders'
 
 export default class Hug extends Command {
   constructor (client: GarconeteClient) {
     super({
       name: 'hug',
-      description: 'abasa um user',
+      description: 'hugs a user',
       type: 'SUB_COMMAND',
       options: [{
-        name: 'member',
-        description: 'usuario',
+        name: 'user',
+        description: 'user to get a hug',
         required: true,
         type: 'USER'
       }]
@@ -20,8 +21,16 @@ export default class Hug extends Command {
   }
 
   async run (interaction: CommandInteraction) {
-    const user = interaction.options.getUser('member')
+    const user = interaction.options.getUser('user')
 
-    interaction.reply(`${interaction.user} abrasou ${user.username}`)
+    const reply = applyPlaceholders(
+      {
+        author: interaction.user,
+        user
+      },
+      this.client.getCommandPhrase('action', 'hug.reply', interaction.locale)
+    )
+
+    interaction.reply(reply)
   }
 }

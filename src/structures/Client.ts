@@ -1,4 +1,5 @@
 import { Client, ClientOptions } from 'discord.js'
+import { request } from 'undici'
 import { readdir } from 'fs/promises'
 
 import Command from './Command'
@@ -8,11 +9,13 @@ import { join } from 'path'
 
 export default class GarconeteClient extends Client {
   commands: Command[]
+  request: typeof request
 
   constructor (options: ClientOptions) {
     super(options)
 
     this.commands = []
+    this.request = request
   }
 
   async loadEvents (path = '/events') {

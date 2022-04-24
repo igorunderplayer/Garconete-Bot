@@ -5,10 +5,10 @@ import { CommandInteraction } from 'discord.js'
 export default class Actions extends Command {
   constructor (client: GarconeteClient) {
     super({
-      name: 'actions',
+      name: 'action',
       description: 'ações',
-      testing: true,
       handleSubCommands: true,
+      testing: true,
       options: []
     })
 

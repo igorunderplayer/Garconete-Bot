@@ -1,17 +1,18 @@
 import Command from '../../../structures/Command'
 import GarconeteClient from '../../../structures/Client'
 import { CommandInteraction } from 'discord.js'
+import applyPlaceholders from '../../../Util/placeholders'
 
 export default class Kiss extends Command {
   constructor (client: GarconeteClient) {
     super({
       name: 'kiss',
-      description: 'beja um usuario',
+      description: 'kiss a user',
       type: 'SUB_COMMAND',
       options: [{
         name: 'user',
         required: true,
-        description: 'usuario pra beija',
+        description: 'user that will receive a nice kiss',
         type: 'USER'
       }]
     })
@@ -23,10 +24,17 @@ export default class Kiss extends Command {
     const user = interaction.options.getUser('user')
     // "easter egg"
     if (user.id === this.client.user.id) {
-      interaction.reply(`:flushed: ${interaction.user} acabou de me dar um beij....`)
-      return
+      interaction.reply(':flushed:')
     }
 
-    interaction.reply(`${interaction.user} bejou ${user.username}`)
+    const reply = applyPlaceholders(
+      {
+        author: interaction.user,
+        user
+      },
+      this.client.getCommandPhrase('action', 'hug.reply', interaction.locale)
+    )
+
+    interaction.reply(reply)
   }
 }

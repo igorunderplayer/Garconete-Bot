@@ -29,6 +29,16 @@
         "en-US": "%{user%}'s avatar",
         "pt-BR": "avatar de %{user%}"
       }
+    },
+    "action": {
+      "kiss.reply": {
+        "en-US": "%{author%} just kissed %{user%}",
+        "pt-BR": "%{author%} acaba de beijar %{user%}"
+      },
+      "hug.reply": {
+        "en-US": "%{author%} just hugged %{user%}",
+        "pt-BR": "%{author%} acaba de abraçar %{user%}"
+      }
     }
   }
 }
