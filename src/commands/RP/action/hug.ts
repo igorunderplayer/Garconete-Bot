@@ -1,7 +1,7 @@
 import { CommandInteraction } from 'discord.js'
 import GarconeteClient from '../../../structures/Client'
 import Command from '../../../structures/Command'
-import applyPlaceholders from '../../../Util/placeholders'
+import applyPlaceholders from '../../../util/placeholders'
 
 export default class Hug extends Command {
   constructor (client: GarconeteClient) {

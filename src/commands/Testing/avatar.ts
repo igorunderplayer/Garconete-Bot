@@ -2,7 +2,7 @@ import { CommandInteraction, MessageEmbed } from 'discord.js'
 import GarconeteClient from '../../structures/Client'
 import Command from '../../structures/Command'
 
-import placeholders from '../../Util/placeholders'
+import placeholders from '../../util/placeholders'
 
 export default class Avatar extends Command {
   constructor (client: GarconeteClient) {

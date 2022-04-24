@@ -1,7 +1,7 @@
 import Command from '../../../structures/Command'
 import GarconeteClient from '../../../structures/Client'
 import { CommandInteraction } from 'discord.js'
-import applyPlaceholders from '../../../Util/placeholders'
+import applyPlaceholders from '../../../util/placeholders'
 
 export default class Kiss extends Command {
   constructor (client: GarconeteClient) {
