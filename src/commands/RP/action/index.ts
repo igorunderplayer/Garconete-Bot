@@ -27,5 +27,10 @@ export default class Actions extends Command {
       const Commando = (await import('./kiss')).default
       new Commando(this.client).run(interaction)
     }
+
+    if (subCommand === 'marry') {
+      const Commando = (await import('./marry')).default
+      new Commando(this.client).run(interaction)
+    }
   }
 }

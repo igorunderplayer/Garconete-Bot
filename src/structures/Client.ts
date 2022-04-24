@@ -6,14 +6,19 @@ import Command from './Command'
 
 import messages from '../messages.json'
 import { join } from 'path'
+import DatabaseManager from '../firebase/DatabaseManager'
+
+import { app as firebaseApp } from '../firebase'
 
 export default class GarconeteClient extends Client {
+  database: DatabaseManager
   commands: Command[]
   request: typeof request
 
   constructor (options: ClientOptions) {
     super(options)
 
+    this.database = new DatabaseManager(firebaseApp)
     this.commands = []
     this.request = request
   }
