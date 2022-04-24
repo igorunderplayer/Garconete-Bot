@@ -1,4 +1,4 @@
-# Garconete-Bot
+# Garçonete-Bot
 
 TODO:
 - [ ] create this README
