@@ -1,6 +1,6 @@
 import Command from '../../../structures/Command'
 import GarconeteClient from '../../../structures/Client'
-import { CommandInteraction, MessageActionRow, MessageButton } from 'discord.js'
+import { CommandInteraction, Message, MessageActionRow, MessageButton } from 'discord.js'
 import applyPlaceholders from '../../../util/placeholders'
 
 export default class Kiss extends Command {
@@ -21,15 +21,25 @@ export default class Kiss extends Command {
   }
 
   async run (interaction: CommandInteraction) {
-    interaction.deferReply()
+    await interaction.deferReply()
     const user = interaction.options.getUser('user')
     // "easter egg"
     if (user.id === this.client.user.id) {
-      interaction.reply(':flushed: sorry, i am a bot')
+      interaction.editReply(':flushed: sorry, i am a bot')
+      return
+    }
+
+    if (user.id === interaction.user.id) {
+      interaction.editReply('amor proprio é tudo')
       return
     }
 
     const dbUser = await this.client.database.getUser(interaction.user.id)
+
+    if (dbUser.money < 250) {
+      await interaction.editReply('Você é muito pobre para isso, um casamento necessita de no minimo 250 coins!')
+      return
+    }
 
     if (dbUser.marriedWith) {
       const marriedWith = await this.client.users.fetch(dbUser.marriedWith)
@@ -40,7 +50,11 @@ export default class Kiss extends Command {
           new MessageButton()
             .setStyle('SUCCESS')
             .setLabel('SIM, teremos muito sexo')
-            .setCustomId('yeah')
+            .setCustomId('yeah'),
+          new MessageButton()
+            .setStyle('DANGER')
+            .setLabel('NAO, nada de sexo')
+            .setCustomId('no')
         ])
 
       await interaction.editReply({
@@ -48,7 +62,7 @@ export default class Kiss extends Command {
         components: [row]
       })
 
-      const reply = await interaction.fetchReply()
+      const reply = await interaction.fetchReply() as Message<true>
 
       const collector = interaction.channel.createMessageComponentCollector({
         filter: int => int.user.id === user.id && int.message.id === reply.id,
@@ -57,13 +71,30 @@ export default class Kiss extends Command {
         max: 1
       })
 
-      collector.on('collect', int => {
+      collector.on('collect', async int => {
         if (int.customId === 'yeah') {
-          this.client.database.updateUser({
+          await this.client.database.updateUser({
             id: interaction.user.id,
             marriedWith: user.id
           })
+
+          await this.client.database.updateUser({
+            id: int.user.id,
+            marriedWith: interaction.user.id
+          })
+
           int.reply(`${user} e ${interaction.user}, parabens, vcs estao cazados!!`)
+        } else {
+          int.reply(`${interaction.user} ... infelizmente ${user} não sente o mesmo que vc sente por ele(a).... mas vc sempre pode tentar dnv com outra pessoa :smile:`)
+        }
+      })
+
+      collector.on('end', (_collected, reason) => {
+        if (reason === 'time') {
+          reply.edit({
+            content: `${interaction.user} vc foi COMPLETAMENTE ignorado por ${user.username}`,
+            components: []
+          })
         }
       })
     }
