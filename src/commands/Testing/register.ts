@@ -16,7 +16,7 @@ export default class Register extends Command {
   }
 
   async run (interaction: CommandInteraction) {
-    interaction.reply('registrado vc...')
+    interaction.reply('registrando vc...')
 
     await new UserServices().createUser(interaction.user.id)
 

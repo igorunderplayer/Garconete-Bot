@@ -1,6 +1,5 @@
 import Client from './structures/Client'
 import { Options } from 'discord.js'
-import 'dotenv/config'
 
 const client = new Client({
   intents: 513,
