@@ -1,6 +1,5 @@
-import { CommandInteraction } from 'discord.js'
 import GarconeteClient from '../../../structures/Client'
-import Command from '../../../structures/Command'
+import Command, { CommandRun } from '../../../structures/Command'
 import applyPlaceholders from '../../../util/placeholders'
 
 export default class Hug extends Command {
@@ -20,16 +19,12 @@ export default class Hug extends Command {
     this.client = client
   }
 
-  async run (interaction: CommandInteraction) {
+  async run ({ interaction, t } : CommandRun) {
     const user = interaction.options.getUser('user')
-
-    const reply = applyPlaceholders(
-      {
-        author: interaction.user,
-        user
-      },
-      this.client.getCommandPhrase('action', 'hug.reply', interaction.locale)
-    )
+    const reply = t(this.name, 'hug.reply', interaction.locale, {
+      author: interaction.user,
+      user
+    })
 
     interaction.reply(reply)
   }

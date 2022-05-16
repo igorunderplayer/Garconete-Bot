@@ -1,6 +1,5 @@
-import Command from '../../../structures/Command'
+import Command, { CommandRun } from '../../../structures/Command'
 import GarconeteClient from '../../../structures/Client'
-import { CommandInteraction } from 'discord.js'
 
 export default class Actions extends Command {
   constructor (client: GarconeteClient) {
@@ -15,22 +14,22 @@ export default class Actions extends Command {
     this.client = client
   }
 
-  async run (interaction: CommandInteraction) {
+  async run ({ interaction, t } : CommandRun) {
     const subCommand = interaction.options.getSubcommand()
 
     if (subCommand === 'hug') {
       const Commando = (await import('./hug')).default
-      new Commando(this.client).run(interaction)
+      new Commando(this.client).run({ interaction, t })
     }
 
     if (subCommand === 'kiss') {
       const Commando = (await import('./kiss')).default
-      new Commando(this.client).run(interaction)
+      new Commando(this.client).run({ interaction, t })
     }
 
     if (subCommand === 'marry') {
       const Commando = (await import('./marry')).default
-      new Commando(this.client).run(interaction)
+      new Commando(this.client).run({ interaction, t })
     }
   }
 }

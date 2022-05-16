@@ -1,9 +1,9 @@
-import Command from '../../../structures/Command'
+import Command, { CommandRun } from '../../../structures/Command'
 import GarconeteClient from '../../../structures/Client'
-import { CommandInteraction, Message, MessageActionRow, MessageButton } from 'discord.js'
-import applyPlaceholders from '../../../util/placeholders'
+import { Message, MessageActionRow, MessageButton } from 'discord.js'
+import { UserServices } from '../../../services'
 
-export default class Kiss extends Command {
+export default class Marry extends Command {
   constructor (client: GarconeteClient) {
     super({
       name: 'marry',
@@ -20,9 +20,11 @@ export default class Kiss extends Command {
     this.client = client
   }
 
-  async run (interaction: CommandInteraction) {
+  async run ({ interaction, t } : CommandRun) {
     await interaction.deferReply()
     const user = interaction.options.getUser('user')
+    const userServices = new UserServices()
+
     // "easter egg"
     if (user.id === this.client.user.id) {
       interaction.editReply(':flushed: sorry, i am a bot')
@@ -34,31 +36,32 @@ export default class Kiss extends Command {
       return
     }
 
-    const dbUser = await this.client.database.getUser(interaction.user.id)
+    // const dbUser = await this.client.database.getUser(interaction.user.id)
+    const dbUser = await userServices.getUser(interaction.user.id)
 
     if (dbUser.money < 250) {
       await interaction.editReply('Você é muito pobre para isso, um casamento necessita de no minimo 250 coins!')
       return
     }
 
-    if (dbUser.marriedWith) {
-      const marriedWith = await this.client.users.fetch(dbUser.marriedWith)
-      interaction.editReply(`vc... ja é casado... com ${marriedWith}.. (em teoria vc poderia casar-se com mais de uma pessoa, porem eu n permito)`)
+    if (dbUser.marriedWithId) {
+      const marriedWith = await this.client.users.fetch(dbUser.marriedWithId)
+      interaction.editReply(t('action', 'marry.alread', interaction.locale, { marriedWith }))
     } else {
       const row = new MessageActionRow()
         .addComponents([
           new MessageButton()
             .setStyle('SUCCESS')
-            .setLabel('SIM, teremos muito sexo')
+            .setEmoji('✅')
             .setCustomId('yeah'),
           new MessageButton()
             .setStyle('DANGER')
-            .setLabel('NAO, nada de sexo')
+            .setEmoji('❌')
             .setCustomId('no')
         ])
 
       await interaction.editReply({
-        content: `${user}, ${interaction.user} deseja casar-se com vc, aceitas??`,
+        content: t('action', 'marry.ask', interaction.locale, { asksTo: user, user: interaction.user }),
         components: [row]
       })
 
@@ -73,26 +76,20 @@ export default class Kiss extends Command {
 
       collector.on('collect', async int => {
         if (int.customId === 'yeah') {
-          await this.client.database.updateUser({
-            id: interaction.user.id,
-            marriedWith: user.id
+          await userServices.updateUser(interaction.user.id, {
+            marriedWithId: user.id
           })
 
-          await this.client.database.updateUser({
-            id: int.user.id,
-            marriedWith: interaction.user.id
-          })
-
-          int.reply(`${user} e ${interaction.user}, parabens, vcs estao cazados!!`)
+          int.reply(t('action', 'marry.happyEnding', interaction.locale, { asksTo: user, user: interaction.user }))
         } else {
-          int.reply(`${interaction.user} ... infelizmente ${user} não sente o mesmo que vc sente por ele(a).... mas vc sempre pode tentar dnv com outra pessoa :smile:`)
+          int.reply(t('action', 'marry.sadEnding', interaction.locale, { asksTo: user, user: interaction.user }))
         }
       })
 
       collector.on('end', (_collected, reason) => {
         if (reason === 'time') {
           reply.edit({
-            content: `${interaction.user} vc foi COMPLETAMENTE ignorado por ${user.username}`,
+            content: t('action', 'marry.ignored', interaction.locale, { asksTo: user.username, user: interaction.user }),
             components: []
           })
         }

@@ -6,19 +6,14 @@ import Command from './Command'
 
 import messages from '../messages.json'
 import { join } from 'path'
-import DatabaseManager from '../firebase/DatabaseManager'
-
-import { app as firebaseApp } from '../firebase'
 
 export default class GarconeteClient extends Client {
-  database: DatabaseManager
   commands: Command[]
   request: typeof request
 
   constructor (options: ClientOptions) {
     super(options)
 
-    this.database = new DatabaseManager(firebaseApp)
     this.commands = []
     this.request = request
   }
@@ -61,10 +56,5 @@ export default class GarconeteClient extends Client {
       console.log(`[Bot] Registering testing commands to guild ${guild.name}`)
       guild.commands.set(this.commands.filter(cmd => cmd.testing))
     })
-  }
-
-  getCommandPhrase (command: string, prop: string, locale: string) {
-    const phrase = messages.commands[command][prop]
-    return phrase[locale] ?? phrase['en-US']
   }
 }

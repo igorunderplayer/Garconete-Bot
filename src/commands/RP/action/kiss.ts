@@ -1,7 +1,5 @@
-import Command from '../../../structures/Command'
+import Command, { CommandRun } from '../../../structures/Command'
 import GarconeteClient from '../../../structures/Client'
-import { CommandInteraction } from 'discord.js'
-import applyPlaceholders from '../../../util/placeholders'
 
 export default class Kiss extends Command {
   constructor (client: GarconeteClient) {
@@ -20,20 +18,17 @@ export default class Kiss extends Command {
     this.client = client
   }
 
-  async run (interaction: CommandInteraction) {
+  async run ({ interaction, t } : CommandRun) {
     const user = interaction.options.getUser('user')
     // "easter egg"
     if (user.id === this.client.user.id) {
       interaction.reply(':flushed:')
     }
 
-    const reply = applyPlaceholders(
-      {
-        author: interaction.user,
-        user
-      },
-      this.client.getCommandPhrase('action', 'hug.reply', interaction.locale)
-    )
+    const reply = t(this.name, 'kiss.reply', interaction.locale, {
+      author: interaction.user,
+      user
+    })
 
     interaction.reply(reply)
   }
