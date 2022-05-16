@@ -14,7 +14,14 @@ export default class InteractionCreate extends Event<'interactionCreate'> {
 
   async handle ([interaction]: ClientEvents['interactionCreate']) {
     if (interaction.isCommand()) {
-      const command = this.client.commands.find(cmd => cmd.name === interaction.commandName)
+      if (this.client.blacklistedIds.indexOf(interaction.user.id) !== -1) {
+        return interaction.reply({
+          content: 'you are blacklisted',
+          ephemeral: true
+        })
+      }
+
+      const command = this.client.commands.get(interaction.commandName)
       await command.run({ interaction, t: translate })
     }
   }

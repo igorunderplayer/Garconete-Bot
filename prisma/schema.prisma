@@ -17,6 +17,7 @@ model User {
   dailyRewardAt   DateTime @default(now())
   money           Int      @default(100)
   premium         Boolean  @default(false)
+  blacklisted     Boolean  @default(false)
   marriedWithId   String?
   marriedWith     User?    @relation("MarriedWith", fields: [marriedWithId], references: [id])
   marriedWithUser User?    @relation("MarriedWith")

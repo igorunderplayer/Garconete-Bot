@@ -1,4 +1,4 @@
-import { Client, ClientOptions } from 'discord.js'
+import { Client, ClientOptions, Collection } from 'discord.js'
 import { request } from 'undici'
 import { readdir } from 'fs/promises'
 
@@ -7,13 +7,15 @@ import Command from './Command'
 import { join } from 'path'
 
 export default class GarconeteClient extends Client {
-  commands: Command[]
+  commands: Collection<string, Command>
+  blacklistedIds: string[]
   request: typeof request
 
   constructor (options: ClientOptions) {
     super(options)
 
-    this.commands = []
+    this.blacklistedIds = []
+    this.commands = new Collection()
     this.request = request
   }
 
@@ -26,10 +28,10 @@ export default class GarconeteClient extends Client {
     }
   }
 
-  async loadCommands (path = '/commands') {
+  async loadCommands ({ path = '/commands', ignoreCommandDirectory = [] } = {}) {
     const files = await readdir(join(__dirname, '..', path), { withFileTypes: true })
     for await (const file of files) {
-      if (!file.isDirectory()) return
+      if (!file.isDirectory() || ignoreCommandDirectory.includes(file.name)) return
       const commandFiles = await readdir(join(__dirname, '..', path, file.name))
       for await (const commandFile of commandFiles) {
         const { default: Command } = await import(join(__dirname, '..', path, file.name, commandFile))
@@ -44,16 +46,16 @@ export default class GarconeteClient extends Client {
             command.options.push(subCommand)
           }
         }
-        this.commands.push(command)
+        this.commands.set(command.name, command)
       }
     }
 
-    this.application?.commands.set(this.commands.filter(cmd => !cmd.testing))
+    this.application?.commands.set([...this.commands.filter(c => !c.testing).values()])
     const devGuilds = process.env.DEV_GUILDS.split(' ')
     devGuilds.forEach(guildId => {
       const guild = this.guilds.cache.get(guildId)
       console.log(`[Bot] Registering testing commands to guild ${guild.name}`)
-      guild.commands.set(this.commands.filter(cmd => cmd.testing))
+      guild.commands.set([...this.commands.filter(c => c.testing).values()])
     })
   }
 }
