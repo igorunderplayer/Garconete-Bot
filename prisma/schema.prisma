@@ -14,7 +14,8 @@ model User {
   id              String   @id
   createdAt       DateTime @default(now())
   updatedAt       DateTime @default(now())
-  money           Int      @default(0)
+  dailyRewardAt   DateTime @default(now())
+  money           Int      @default(100)
   premium         Boolean  @default(false)
   marriedWithId   String?
   marriedWith     User?    @relation("MarriedWith", fields: [marriedWithId], references: [id])

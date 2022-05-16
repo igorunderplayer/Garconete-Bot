@@ -1,35 +1,5 @@
 {
   "commands": {
-    "ping": {
-      "reply": {
-        "en-US": "pong! \n ws latency: %{wsLatency%}ms",
-        "pt-BR": "pong! \n latencia ws: %{wsLatency%}ms"
-      }
-    },
-    "botinfo": {
-      "embed.title": {
-        "en-US": "My informations",
-        "pt-BR": "Minhas informações"
-      },
-      "embed.field[memory].name": {
-        "en-US": "🥶 Memory usage",
-        "pt-BR": "🥶 Uso de memoria"
-      },
-      "embed.field[statistics].name": {
-        "en-US": "My statistics",
-        "pt-BR": "Minhas estatisticas"
-      },
-      "embed.field[uptime].name": {
-        "en-US": "🕐 Uptime",
-        "pt-BR": "🕐 Tempo ativo"
-      }
-    },
-    "avatar": {
-      "embed.title": {
-        "en-US": "%{user%}'s avatar",
-        "pt-BR": "avatar de %{user%}"
-      }
-    },
     "action": {
       "marry.alread": {
         "en-US": "you... are already married to %{marriedWith%}... (in theory you can marry more than one person, but i dont allow)",
@@ -58,6 +28,46 @@
       "hug.reply": {
         "en-US": "%{author%} just hugged %{user%}",
         "pt-BR": "%{author%} acaba de abraçar %{user%}"
+      }
+    },
+    "avatar": {
+      "embed.title": {
+        "en-US": "%{user%}'s avatar",
+        "pt-BR": "avatar de %{user%}"
+      }
+    },
+    "botinfo": {
+      "embed.title": {
+        "en-US": "My informations",
+        "pt-BR": "Minhas informações"
+      },
+      "embed.field[memory].name": {
+        "en-US": "🥶 Memory usage",
+        "pt-BR": "🥶 Uso de memoria"
+      },
+      "embed.field[statistics].name": {
+        "en-US": "My statistics",
+        "pt-BR": "Minhas estatisticas"
+      },
+      "embed.field[uptime].name": {
+        "en-US": "🕐 Uptime",
+        "pt-BR": "🕐 Tempo ativo"
+      }
+    },
+    "daily": {
+      "already_claimed": {
+        "en-US": "you already claimed your daily reward, you can claim it again in %{remaining%}",
+        "pt-BR": "vc ja pegou sua recompensa diaria hoje, faltam %{remaining%} para vc resgatar sua recompensa"
+      },
+      "success": {
+        "en-US": "yeah, you received %{reward%} guardanapos today, now u have %{money%} guardanapos",
+        "pt-BR": "yeah, vc recebeu %{reward%} guardanapos hoje, agora vc possui %{money%} guardanapos"
+      }
+    },
+    "ping": {
+      "reply": {
+        "en-US": "pong! \n ws latency: %{wsLatency%}ms",
+        "pt-BR": "pong! \n latencia ws: %{wsLatency%}ms"
       }
     }
   }

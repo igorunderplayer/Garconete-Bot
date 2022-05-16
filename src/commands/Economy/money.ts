@@ -1,4 +1,3 @@
-import { CommandInteraction } from 'discord.js'
 import { UserServices } from '../../services'
 import GarconeteClient from '../../structures/Client'
 import Command, { CommandRun } from '../../structures/Command'

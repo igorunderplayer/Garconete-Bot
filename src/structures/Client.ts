@@ -4,7 +4,6 @@ import { readdir } from 'fs/promises'
 
 import Command from './Command'
 
-import messages from '../messages.json'
 import { join } from 'path'
 
 export default class GarconeteClient extends Client {
