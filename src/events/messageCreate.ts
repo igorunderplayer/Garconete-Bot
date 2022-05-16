@@ -3,7 +3,6 @@ import GarconeteClient from '../structures/Client'
 import Event from '../structures/Event'
 
 import { inspect } from 'util'
-import { prisma } from '../prisma'
 import { UserServices } from '../services'
 
 const devUsers = process.env.DEV_USERS.split(' ')
@@ -27,20 +26,11 @@ export default class MessageCreate extends Event<'messageCreate'> {
       if (cmd === 'die') message.reply(':flushed: no')
       if (cmd === 'sexo') message.reply('a noite toda bb rs :fire::smirk:')
 
-      if (cmd === 'allusers' && devUsers.includes(message.author.id)) {
-        const allUsers = await prisma.user.findMany()
-
-        message.reply(inspect(allUsers))
-      }
-
-      if (cmd === 'fullme' && devUsers.includes(message.author.id)) {
-        const user = await new UserServices().getFullUser(message.author.id)
-
-        message.reply(inspect(user))
-      }
-
       // test eval
       if (cmd === 'eval' && devUsers.includes(message.author.id)) {
+        // eslint-disable-next-line no-unused-vars
+        const userServices = new UserServices() // of using in eval rs
+
         const clean = (text: any): any => {
           if (typeof text === 'string') {
             text = text
@@ -52,13 +42,10 @@ export default class MessageCreate extends Event<'messageCreate'> {
           return text
         }
         try {
-          // eslint-disable-next-line no-eval
-          let result = await eval(args.join(' '))
-
-          if (result instanceof Promise) { result = await result }
-
-          // if(typeof result == 'object')
-          result = clean(inspect(result, { depth: 0 }))
+          const result = clean(
+            // eslint-disable-next-line no-eval
+            inspect(await eval(args.join(' ')), { depth: 0 })
+          )
 
           const embed = new MessageEmbed()
             .setTitle('Resultado:')
