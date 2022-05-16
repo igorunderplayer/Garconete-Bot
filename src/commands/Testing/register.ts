@@ -1,6 +1,5 @@
-import Command from '../../structures/Command'
+import Command, { CommandRun } from '../../structures/Command'
 import GarconeteClient from '../../structures/Client'
-import { CommandInteraction } from 'discord.js'
 
 import { UserServices } from '../../services'
 
@@ -15,8 +14,8 @@ export default class Register extends Command {
     this.client = client
   }
 
-  async run (interaction: CommandInteraction) {
-    interaction.reply('registrando vc...')
+  async run ({ interaction, t } : CommandRun) {
+    interaction.reply('registrando vc...   (cmd de testes)')
 
     await new UserServices().createUser(interaction.user.id)
 

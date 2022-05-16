@@ -1,6 +1,6 @@
-import { CommandInteraction, MessageEmbed } from 'discord.js'
+import { MessageEmbed } from 'discord.js'
 import GarconeteClient from '../../structures/Client'
-import Command from '../../structures/Command'
+import Command, { CommandRun } from '../../structures/Command'
 
 export default class BotInfo extends Command {
   constructor (client: GarconeteClient) {
@@ -13,11 +13,11 @@ export default class BotInfo extends Command {
     this.client = client
   }
 
-  async run (interaction: CommandInteraction) {
-    const title = this.client.getCommandPhrase(this.name, 'embed.title', interaction.locale)
-    const memoryText = this.client.getCommandPhrase(this.name, 'embed.field[memory].name', interaction.locale)
-    const statisticsText = this.client.getCommandPhrase(this.name, 'embed.field[statistics].name', interaction.locale)
-    const uptimeText = this.client.getCommandPhrase(this.name, 'embed.field[uptime].name', interaction.locale)
+  async run ({ interaction, t } : CommandRun) {
+    const title = t(this.name, 'embed.title', interaction.locale)// this.client.getCommandPhrase(this.name, 'embed.title', interaction.locale)
+    const memoryText = t(this.name, 'embed.field[memory].name', interaction.locale) // this.client.getCommandPhrase(this.name, 'embed.field[memory].name', interaction.locale)
+    const statisticsText = t(this.name, 'embed.field[statistics].name', interaction.locale) // this.client.getCommandPhrase(this.name, 'embed.field[statistics].name', interaction.locale)
+    const uptimeText = t(this.name, 'embed.field[uptime].name', interaction.locale) // this.client.getCommandPhrase(this.name, 'embed.field[uptime].name', interaction.locale)
 
     const heapTotal = ~~(process.memoryUsage().heapTotal / 1024 / 1024)
     const heapUsed = ~~(process.memoryUsage().heapTotal / 1024 / 1024)

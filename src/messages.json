@@ -31,6 +31,26 @@
       }
     },
     "action": {
+      "marry.alread": {
+        "en-US": "you... are already married to %{marriedWith%}... (in theory you can marry more than one person, but i dont allow)",
+        "pt-BR": "vc... ja é casado... com %{marriedWith%}... (em teoria vc poderia se casar com mais de uma pessoa, porem eu n permito)"
+      },
+      "marry.ask": {
+        "en-US": "%{asksTo%}, %{user%} wants to marry with you, do you accepts??",
+        "pt-BR": "%{asksTo%}, %{user%} deseja casar-se com vc, aceitas??"
+      },
+      "marry.happyEnding": {
+        "en-US": "%{asksTo%} and %{user%}, congratulations, you are married!!!",
+        "pt-BR": "%{asksTo%} e %{user%}, parabens, vcs estao casados!!!"
+      },
+      "marry.sadEnding": {
+        "en-US": "%{user%}... unfortunately %{asksTo%} doesn't feel the same way you feel for him/her .... but you can always try again with someone else :smile:",
+        "pt-BR": "%{user%} ... infelizmente %{asksTo%} não sente o mesmo que vc sente por ele(a).... mas vc sempre pode tentar dnv com outra pessoa :smile:"
+      },
+      "marry.ignored": {
+        "en-US": "%{user%} you were COMPLETELY ignored by %{asksTo%}",
+        "pt-BR": "%{user%} vc foi COMPLETAMENTE ignorado por %{asksTo%}"
+      },
       "kiss.reply": {
         "en-US": "%{author%} just kissed %{user%}",
         "pt-BR": "%{author%} acaba de beijar %{user%}"

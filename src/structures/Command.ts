@@ -1,4 +1,5 @@
 import { CommandInteraction, ApplicationCommandData, ApplicationCommandSubCommandData } from 'discord.js'
+import translate from '../util/translate'
 import GarconeteClient from './Client'
 
 type SubCommand = ApplicationCommandSubCommandData & {
@@ -13,6 +14,11 @@ type CommandData = ApplicationCommandData & {
 
   subCommands?: any
   handleSubCommands?: boolean
+}
+
+export type CommandRun = {
+  interaction: CommandInteraction,
+  t: typeof translate
 }
 
 export default abstract class Command {
@@ -32,5 +38,5 @@ export default abstract class Command {
     }
   }
 
-  abstract run?(interaction: CommandInteraction): Promise<any> | any
+  abstract run?({ interaction, t }: CommandRun): Promise<any> | any
 }

@@ -1,7 +1,5 @@
-import { CommandInteraction } from 'discord.js'
 import GarconeteClient from '../../structures/Client'
-import Command from '../../structures/Command'
-import placeholders from '../../util/placeholders'
+import Command, { CommandRun } from '../../structures/Command'
 
 export default class Ping extends Command {
   constructor (client: GarconeteClient) {
@@ -13,12 +11,10 @@ export default class Ping extends Command {
     this.client = client
   }
 
-  async run (interaction: CommandInteraction) {
-    const locale = interaction.locale
-    const phrase = this.client.getCommandPhrase(this.name, 'reply', locale)
-    const reply = placeholders({
+  async run ({ interaction, t } : CommandRun) {
+    const reply = t(this.name, 'reply', interaction.locale, {
       wsLatency: ~~(this.client.ws.ping)
-    }, phrase)
+    })
     interaction.reply(reply)
   }
 }

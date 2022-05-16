@@ -11,12 +11,13 @@ class UserServices {
               id: options.marriedWithId
             },
             create: {
-              id: options.marriedWithId,
-              marriedWithId: id
+              id: options.marriedWithId
             }
           }
         }
       })
+
+      delete options.marriedWithId
     }
 
     return prisma.user.create({
@@ -65,12 +66,13 @@ class UserServices {
               id: options.marriedWithId
             },
             create: {
-              id: options.marriedWithId,
-              marriedWithId: id
+              id: options.marriedWithId
             }
           }
         }
       })
+
+      delete options.marriedWithId
     }
 
     console.log(options)

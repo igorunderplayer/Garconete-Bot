@@ -1,9 +1,9 @@
 import { CommandInteraction } from 'discord.js'
 import { UserServices } from '../../services'
 import GarconeteClient from '../../structures/Client'
-import Command from '../../structures/Command'
+import Command, { CommandRun } from '../../structures/Command'
 
-export default class Ping extends Command {
+export default class Money extends Command {
   constructor (client: GarconeteClient) {
     super({
       name: 'money',
@@ -18,7 +18,7 @@ export default class Ping extends Command {
     this.client = client
   }
 
-  async run (interaction: CommandInteraction) {
+  async run ({ interaction, t } : CommandRun) {
     const userServices = new UserServices()
     const user = interaction.options.getUser('user') ?? interaction.user
     const { money } = await userServices.getUser(user.id)
