@@ -23,7 +23,7 @@ export default class InteractionCreate extends Event<'interactionCreate'> {
 
       try {
         const command = this.client.commands.get(interaction.commandName)
-        await command.run({ interaction, t: (command, prop, locale, obj) => translate('command', command, prop, locale, obj) })
+        await command.run({ interaction, t: (command, prop, locale, obj) => translate('commands', command, prop, locale, obj) })
       } catch (err) {
         const errorLogsChannel = await this.client.channels.fetch(process.env.DISCORD_ERROR_LOGS_CHANNEL) as TextChannel
 
