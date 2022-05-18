@@ -30,7 +30,8 @@ export default class GarconeteClient extends Client {
 
   async loadCommands ({ path = '/commands', ignoreCommandDirectory = [] } = {}) {
     const files = await readdir(join(__dirname, '..', path), { withFileTypes: true })
-    for await (const file of files) {
+    // for await (file of files) n funciona direito aqui
+    await Promise.all(files.map(async file => {
       if (!file.isDirectory() || ignoreCommandDirectory.includes(file.name)) return
       const commandFiles = await readdir(join(__dirname, '..', path, file.name))
       for await (const commandFile of commandFiles) {
@@ -40,15 +41,15 @@ export default class GarconeteClient extends Client {
         if (command.handleSubCommands) {
           const subCommandFiles = (await readdir(join(__dirname, '..', path, file.name, commandFile))).filter(f => f !== 'index.ts' && f !== 'index.js')
           for await (const subCommandFile of subCommandFiles) {
-            console.log(subCommandFile)
             const { default: SubCommand } = await import(join(__dirname, '..', path, file.name, commandFile, subCommandFile))
             const subCommand = new SubCommand(this)
             command.options.push(subCommand)
           }
         }
+
         this.commands.set(command.name, command)
       }
-    }
+    }))
 
     this.application?.commands.set([...this.commands.filter(c => !c.testing).values()])
     const devGuilds = process.env.DEV_GUILDS.split(' ')

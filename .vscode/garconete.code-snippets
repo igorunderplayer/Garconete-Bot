@@ -1,0 +1,23 @@
+{
+	"Class command": {
+		"description": "Create a new class command",
+		"prefix": "gcmd",
+		"body": [
+			"import GarconeteClient from '@structures/Client'",
+			"import Command, { CommandRun } from '@structures/Command'",
+			"",
+			"export default class ${1/(.{1})/${1:/upcase}/} extends Command {",
+			"\tconstructor (client: GarconeteClient) {",
+			"\t\tsuper({",
+			"\t\t\tname: '$1',",
+			"\t\t\tdescription: '$3'",
+			"\t\t})",
+			"",
+			"\t\tthis.client = client",
+			"\t}",
+			"",
+			"\tasync run ({ interaction, t }: CommandRun) {$0}",
+			"}"
+		]
+	}
+}

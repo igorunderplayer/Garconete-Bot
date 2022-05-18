@@ -1,5 +1,5 @@
-import GarconeteClient from '../../structures/Client'
-import Command, { CommandRun } from '../../structures/Command'
+import GarconeteClient from '@structures/Client'
+import Command, { CommandRun } from '@structures/Command'
 
 export default class Ping extends Command {
   constructor (client: GarconeteClient) {

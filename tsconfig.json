@@ -18,6 +18,13 @@
     "esModuleInterop": true,
 
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+
+    "baseUrl": "./src",
+    "paths": {
+      "@services/*": ["./services/*"],
+      "@structures/*": ["./structures/*"],
+      "@utils/*": ["./utils/*"]
+    }
   }
 }

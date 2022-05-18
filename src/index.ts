@@ -1,4 +1,4 @@
-import Client from './structures/Client'
+import Client from '@structures/Client'
 import { Options } from 'discord.js'
 
 const client = new Client({

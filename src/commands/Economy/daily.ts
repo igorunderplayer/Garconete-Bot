@@ -1,13 +1,16 @@
-import { UserServices } from '../../services'
-import Command, { CommandRun } from '../../structures/Command'
+import GarconeteClient from '@structures/Client'
+import Command, { CommandRun } from '@structures/Command'
+import { UserServices } from '@services/UserServices'
 import convertMilliseconds from '../../util/convertMilliseconds'
 
 export default class Daily extends Command {
-  constructor () {
+  constructor (client: GarconeteClient) {
     super({
       name: 'daily',
       description: 'Get your daily reward!'
     })
+
+    this.client = client
   }
 
   async run ({ interaction, t } : CommandRun) {

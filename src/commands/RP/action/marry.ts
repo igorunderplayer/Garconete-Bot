@@ -1,7 +1,7 @@
-import Command, { CommandRun } from '../../../structures/Command'
-import GarconeteClient from '../../../structures/Client'
+import Command, { CommandRun } from '@structures/Command'
+import GarconeteClient from '@structures/Client'
 import { Message, MessageActionRow, MessageButton } from 'discord.js'
-import { UserServices } from '../../../services'
+import { UserServices } from '@services/UserServices'
 
 export default class Marry extends Command {
   constructor (client: GarconeteClient) {

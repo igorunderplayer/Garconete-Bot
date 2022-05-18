@@ -1,6 +1,6 @@
-import { CommandInteraction, MessageEmbed } from 'discord.js'
-import GarconeteClient from '../../structures/Client'
-import Command, { CommandRun } from '../../structures/Command'
+import { MessageEmbed } from 'discord.js'
+import GarconeteClient from '@structures/Client'
+import Command, { CommandRun } from '@structures/Command'
 
 export default class Avatar extends Command {
   constructor (client: GarconeteClient) {

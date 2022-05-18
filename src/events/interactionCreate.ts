@@ -21,6 +21,7 @@ export default class InteractionCreate extends Event<'interactionCreate'> {
         })
       }
 
+      console.log(interaction.commandName)
       const command = this.client.commands.get(interaction.commandName)
       await command.run({ interaction, t: translate })
     }

@@ -1,6 +1,5 @@
-import GarconeteClient from '../../../structures/Client'
-import Command, { CommandRun } from '../../../structures/Command'
-import applyPlaceholders from '../../../util/placeholders'
+import GarconeteClient from '@structures/Client'
+import Command, { CommandRun } from '@structures/Command'
 
 export default class Hug extends Command {
   constructor (client: GarconeteClient) {

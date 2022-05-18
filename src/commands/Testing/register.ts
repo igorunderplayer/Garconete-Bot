@@ -1,7 +1,7 @@
-import Command, { CommandRun } from '../../structures/Command'
-import GarconeteClient from '../../structures/Client'
+import Command, { CommandRun } from '@structures/Command'
+import GarconeteClient from '@structures/Client'
 
-import { UserServices } from '../../services'
+import { UserServices } from '@services/UserServices'
 
 export default class Register extends Command {
   constructor (client: GarconeteClient) {

@@ -1,6 +1,6 @@
-import { UserServices } from '../../services'
-import GarconeteClient from '../../structures/Client'
-import Command, { CommandRun } from '../../structures/Command'
+import GarconeteClient from '@structures/Client'
+import Command, { CommandRun } from '@structures/Command'
+import { UserServices } from '@services/UserServices'
 
 export default class Money extends Command {
   constructor (client: GarconeteClient) {

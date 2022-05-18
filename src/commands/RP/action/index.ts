@@ -1,5 +1,5 @@
-import Command, { CommandRun } from '../../../structures/Command'
-import GarconeteClient from '../../../structures/Client'
+import Command, { CommandRun } from '@structures/Command'
+import GarconeteClient from '@structures/Client'
 
 export default class Actions extends Command {
   constructor (client: GarconeteClient) {

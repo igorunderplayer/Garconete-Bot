@@ -1,6 +1,6 @@
-import GarconeteClient from '../../structures/Client'
+import GarconeteClient from '@structures/Client'
 import { Message, MessageEmbed } from 'discord.js'
-import { UserServices } from '../../services'
+import { UserServices } from '@services/UserServices'
 import { inspect } from 'util'
 
 const devUsers = process.env.DEV_USERS.split(' ')

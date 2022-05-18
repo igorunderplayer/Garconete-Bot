@@ -1,6 +1,6 @@
 import { MessageEmbed } from 'discord.js'
-import GarconeteClient from '../../structures/Client'
-import Command, { CommandRun } from '../../structures/Command'
+import GarconeteClient from '@structures/Client'
+import Command, { CommandRun } from '@structures/Command'
 
 export default class BotInfo extends Command {
   constructor (client: GarconeteClient) {
