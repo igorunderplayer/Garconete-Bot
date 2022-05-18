@@ -1,4 +1,4 @@
-import { ClientEvents } from 'discord.js'
+import { ClientEvents, MessageEmbed, TextChannel } from 'discord.js'
 import GarconeteClient from '../structures/Client'
 import Event from '../structures/Event'
 
@@ -21,9 +21,27 @@ export default class InteractionCreate extends Event<'interactionCreate'> {
         })
       }
 
-      console.log(interaction.commandName)
-      const command = this.client.commands.get(interaction.commandName)
-      await command.run({ interaction, t: translate })
+      try {
+        const command = this.client.commands.get(interaction.commandName)
+        await command.run({ interaction, t: (command, prop, locale, obj) => translate('command', command, prop, locale, obj) })
+      } catch (err) {
+        const errorLogsChannel = await this.client.channels.fetch(process.env.DISCORD_ERROR_LOGS_CHANNEL) as TextChannel
+
+        const errorEmbed = new MessageEmbed()
+          .setColor('RED')
+          .addField('Error', `\`\`\`js\n${err}\n\`\`\``)
+
+        errorLogsChannel.send({
+          embeds: [errorEmbed]
+        })
+
+        console.error('[Error]', err)
+        interaction.reply({
+          content: translate('events', 'interactionCreate', 'command.error', interaction.locale), ephemeral: true
+        }).catch(() => interaction.editReply({
+          content: translate('events', 'interactionCreate', 'command.error', interaction.locale)
+        }))
+      }
     }
   }
 }

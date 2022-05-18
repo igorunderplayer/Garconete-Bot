@@ -1,5 +1,6 @@
 import GarconeteClient from '@structures/Client'
 import Command, { CommandRun } from '@structures/Command'
+import { MessageEmbed } from 'discord.js'
 
 export default class Hug extends Command {
   constructor (client: GarconeteClient) {
@@ -20,11 +21,17 @@ export default class Hug extends Command {
 
   async run ({ interaction, t } : CommandRun) {
     const user = interaction.options.getUser('user')
-    const reply = t(this.name, 'hug.reply', interaction.locale, {
-      author: interaction.user,
-      user
-    })
 
-    interaction.reply(reply)
+    const embed = new MessageEmbed()
+      .setColor('YELLOW')
+      .setImage('https://acegif.com/wp-content/uploads/anime-kissin-15.gif')
+      .setDescription(t('action', 'hug.reply', interaction.locale, {
+        author: interaction.user,
+        user
+      }))
+
+    interaction.reply({
+      embeds: [embed]
+    })
   }
 }

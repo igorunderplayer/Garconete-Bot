@@ -1,4 +1,12 @@
 {
+  "events": {
+    "interactionCreate": {
+      "command.error": {
+        "en-US": "Sorry, unfortunately an error occurred while trying to execute this command",
+        "pt-BR": "Me desculpe, infelizmente um erro ocorreu enquanto tentava executar este comando"
+      }
+    }
+  },
   "commands": {
     "action": {
       "marry.alread": {
