@@ -13,6 +13,10 @@
         "en-US": "you... are already married to %{marriedWith%}... (in theory you can marry more than one person, but i dont allow)",
         "pt-BR": "vc... ja é casado... com %{marriedWith%}... (em teoria vc poderia se casar com mais de uma pessoa, porem eu n permito)"
       },
+      "marry.toopoor": {
+        "en-US": "sorry, you're too poor for that, a marriage needs 250 cois!",
+        "pt-BR": "desclpe, você é muito pobre para isso, um casamento precisa de 250 cois!"
+      },
       "marry.ask": {
         "en-US": "%{asksTo%}, %{user%} wants to marry with you, do you accepts??",
         "pt-BR": "%{asksTo%}, %{user%} deseja casar-se com vc, aceitas??"
@@ -36,6 +40,12 @@
       "hug.reply": {
         "en-US": "%{author%} just hugged %{user%}",
         "pt-BR": "%{author%} acaba de abraçar %{user%}"
+      }
+    },
+    "anime": {
+      "wallpaper.embed.description": {
+        "en-US": "You can download or see the original image [here](%{imageUrl%}) (full quality)",
+        "pt-BR": "Você pode baixar ou ver a imagem original [aqui](%{imageUrl%}) (full quality)"
       }
     },
     "avatar": {

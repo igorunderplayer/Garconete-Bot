@@ -40,7 +40,7 @@ export default class Marry extends Command {
     const dbUser = await userServices.getUser(interaction.user.id)
 
     if (dbUser.money < 250) {
-      await interaction.editReply('Você é muito pobre para isso, um casamento necessita de no minimo 250 coins!')
+      await interaction.editReply(t('action', 'marry.toopoor', interaction.locale))
       return
     }
 

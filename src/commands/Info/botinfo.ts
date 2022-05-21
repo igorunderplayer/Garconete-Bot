@@ -6,8 +6,7 @@ export default class BotInfo extends Command {
   constructor (client: GarconeteClient) {
     super({
       name: 'botinfo',
-      description: 'mostra minhas informações',
-      testing: true
+      description: 'mostra minhas informações'
     })
 
     this.client = client

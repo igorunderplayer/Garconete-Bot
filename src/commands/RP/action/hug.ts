@@ -1,6 +1,9 @@
 import GarconeteClient from '@structures/Client'
 import Command, { CommandRun } from '@structures/Command'
+
 import { MessageEmbed } from 'discord.js'
+import NekoClient from 'nekos.life'
+const nekos = new NekoClient()
 
 export default class Hug extends Command {
   constructor (client: GarconeteClient) {
@@ -22,9 +25,11 @@ export default class Hug extends Command {
   async run ({ interaction, t } : CommandRun) {
     const user = interaction.options.getUser('user')
 
+    const hug = await nekos.hug()
+
     const embed = new MessageEmbed()
       .setColor('YELLOW')
-      .setImage('https://acegif.com/wp-content/uploads/anime-kissin-15.gif')
+      .setImage(hug.url)
       .setDescription(t('action', 'hug.reply', interaction.locale, {
         author: interaction.user,
         user

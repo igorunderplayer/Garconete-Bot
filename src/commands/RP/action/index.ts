@@ -1,6 +1,10 @@
 import Command, { CommandRun } from '@structures/Command'
 import GarconeteClient from '@structures/Client'
 
+import Hug from './hug'
+import Kiss from './kiss'
+import Marry from './marry'
+
 export default class Actions extends Command {
   constructor (client: GarconeteClient) {
     super({
@@ -17,19 +21,19 @@ export default class Actions extends Command {
   async run ({ interaction, t } : CommandRun) {
     const subCommand = interaction.options.getSubcommand()
 
-    if (subCommand === 'hug') {
-      const Commando = (await import('./hug')).default
-      new Commando(this.client).run({ interaction, t })
-    }
-
-    if (subCommand === 'kiss') {
-      const Commando = (await import('./kiss')).default
-      new Commando(this.client).run({ interaction, t })
-    }
-
-    if (subCommand === 'marry') {
-      const Commando = (await import('./marry')).default
-      new Commando(this.client).run({ interaction, t })
+    switch (subCommand) {
+      case 'hug': {
+        await new Hug(this.client).run({ interaction, t })
+        break
+      }
+      case 'kiss': {
+        await new Kiss(this.client).run({ interaction, t })
+        break
+      }
+      case 'marry': {
+        await new Marry(this.client).run({ interaction, t })
+        break
+      }
     }
   }
 }
