@@ -21,11 +21,10 @@ app.get('/hello', (req, res) => {
 })
 
 app.get('/commands', (req, res) => {
-  const commands = client.commands.map(command => {
+  const commands = client.commands.filter(cmd => !cmd.testing).map(command => {
     return {
       name: command.name,
       description: command.description,
-      hasSubCommands: command,
       options: command.options ?? []
     }
   })

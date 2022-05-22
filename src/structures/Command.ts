@@ -12,7 +12,6 @@ type CommandData = ApplicationCommandData & {
   nsfw?: boolean
 
   subCommands?: any
-  handleSubCommands?: boolean
 }
 
 export type CommandRun = {
