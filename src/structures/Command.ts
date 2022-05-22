@@ -26,6 +26,8 @@ export default abstract class Command {
   public name: CommandData['name']
   public description: CommandData['description']
 
+  public handleSubCommands: CommandData['handleSubCommands']
+  public subCommands: CommandData['subCommands']
   public testing: CommandData['testing']
   public nsfw: CommandData['nsfw']
 
