@@ -1,7 +1,7 @@
+import Event from '@structures/Event'
+import GarconeteClient from '@structures/Client'
 import { ClientEvents } from 'discord.js'
-import { prisma } from '../prisma'
-import GarconeteClient from '../structures/Client'
-import Event from '../structures/Event'
+import { prisma } from '../../prisma'
 
 export default class Ready extends Event<'ready'> {
   trigger: keyof ClientEvents = 'ready'

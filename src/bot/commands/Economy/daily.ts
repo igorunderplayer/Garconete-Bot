@@ -1,7 +1,7 @@
 import GarconeteClient from '@structures/Client'
 import Command, { CommandRun } from '@structures/Command'
 import { UserServices } from '@services/UserServices'
-import convertMilliseconds from '../../util/convertMilliseconds'
+import convertMilliseconds from '@utils/convertMilliseconds'
 
 export default class Daily extends Command {
   constructor (client: GarconeteClient) {

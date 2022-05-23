@@ -1,6 +1,7 @@
 import { MessageEmbed } from 'discord.js'
 import GarconeteClient from '@structures/Client'
 import Command, { CommandRun } from '@structures/Command'
+import convertMilliseconds from '@utils/convertMilliseconds'
 
 export default class BotInfo extends Command {
   constructor (client: GarconeteClient) {
@@ -22,13 +23,7 @@ export default class BotInfo extends Command {
     const heapUsed = ~~(process.memoryUsage().heapTotal / 1024 / 1024)
     const rss = ~~(process.memoryUsage().rss / 1024 / 1024)
 
-    const DAY_IN_MILESSECONDS = 1000 * 60 * 60 * 24
-    const HOUR_IN_MILESSECONDS = 1000 * 60 * 60
-    const MINUTE_IN_MILESSECONDS = 1000 * 60
-
-    const days = ~~(this.client.uptime / DAY_IN_MILESSECONDS)
-    const hours = ~~(this.client.uptime % DAY_IN_MILESSECONDS / HOUR_IN_MILESSECONDS)
-    const minutes = ~~(this.client.uptime % DAY_IN_MILESSECONDS % HOUR_IN_MILESSECONDS / MINUTE_IN_MILESSECONDS)
+    const { days, hours, minutes } = convertMilliseconds(this.client.uptime)
 
     const embed = new MessageEmbed()
       .setTitle(title)

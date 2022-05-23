@@ -1,6 +1,6 @@
 import { ClientEvents } from 'discord.js'
-import GarconeteClient from '../structures/Client'
-import Event from '../structures/Event'
+import GarconeteClient from '@structures/Client'
+import Event from '@structures/Event'
 
 import * as commands from '../commands/MessageCommands'
 

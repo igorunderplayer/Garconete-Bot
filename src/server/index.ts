@@ -1,18 +1,17 @@
 // Testing!
 
-import { PrismaClient } from '@prisma/client'
 import express from 'express'
+import cors from 'cors'
 
 import * as routes from './routes'
+
+import { client } from '../bot'
 
 const app = express()
 
 const port = process.env.PORT ?? 8080
 
-const prisma = new PrismaClient({
-  log: ['query', 'info', 'warn', 'error']
-})
-
+app.use(cors())
 app.use(express.json())
 
 app.use('/auth', routes.auth)
@@ -21,22 +20,16 @@ app.get('/hello', (req, res) => {
   res.send('Hello!')
 })
 
-app.get('/user/:id', async (req, res) => {
-  const { id } = req.params
-
-  const user = await prisma.user.findUnique({
-    where: {
-      id
+app.get('/commands', (req, res) => {
+  const commands = client.commands.filter(cmd => !cmd.testing).map(command => {
+    return {
+      name: command.name,
+      description: command.description,
+      options: command.options ?? []
     }
   })
 
-  if (!user) {
-    return res.status(404).json({
-      message: 'User not found'
-    })
-  }
-
-  res.json({ user })
+  res.json({ data: commands })
 })
 
 app.use((req, res, next) => {
