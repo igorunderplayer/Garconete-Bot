@@ -1,6 +1,9 @@
 import { Router } from 'express'
+import jwt from 'jsonwebtoken'
 import { fetch } from 'undici'
 const router = Router()
+
+const SECRET = process.env.JWT_SECRET
 
 router.get('/teste', (req, res) => {
   res.json({ message: 'teste lol' })
@@ -47,9 +50,13 @@ router.post('/login', async (req, res) => {
     headers: {
       Authorization: `${data.token_type} ${data.access_token}`
     }
-  }).then(r => r.json())
+  }).then(r => r.json()) as { id: string }
 
-  res.json({ message: 'Logged lol', data: userInfo })
+  const token = jwt.sign({
+    id: userInfo.id
+  }, SECRET)
+
+  res.json({ message: 'Logged lol', data: userInfo, token })
 })
 
 export default router
