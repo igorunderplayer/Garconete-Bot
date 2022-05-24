@@ -1,7 +1,7 @@
 import { User } from '@prisma/client'
 import { prisma } from '../prisma'
 
-class UserServices {
+class UsersService {
   createUser (id: string, options: Partial<User & { [key: string]: any }> = {}) {
     if (options.marriedWithId) {
       Object.assign(options, {
@@ -88,4 +88,4 @@ class UserServices {
   }
 }
 
-export { UserServices }
+export { UsersService }

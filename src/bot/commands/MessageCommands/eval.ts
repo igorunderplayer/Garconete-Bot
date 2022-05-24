@@ -1,6 +1,6 @@
 import GarconeteClient from '@structures/Client'
 import { Message, MessageEmbed } from 'discord.js'
-import { UserServices } from '@services/UserServices'
+import { UsersService } from '@services/UsersService'
 import { inspect } from 'util'
 
 const devUsers = process.env.DEV_USERS.split(' ')
@@ -10,7 +10,7 @@ const evalCommand = {
     if (!devUsers.includes(message.author.id)) return
 
     // eslint-disable-next-line no-unused-vars
-    const userServices = new UserServices()
+    const usersService = new UsersService()
 
     const clean = (text: any): any => {
       if (typeof text === 'string') {

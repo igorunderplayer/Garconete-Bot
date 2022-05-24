@@ -1,49 +1,141 @@
 import { Router } from 'express'
+import jwt from 'jsonwebtoken'
+
+import AutoReply from 'bot/plugins/AutoReply'
+import { client } from 'bot'
+import { DiscordRestUsersService } from '@services/DiscordRestUsersService'
+import { UsersService } from '@services/UsersService'
+
+import { Permissions } from 'discord.js'
 import { prisma } from '../../prisma'
 
 const router = Router()
+const SECRET = process.env.JWT_SECRET
+
+router.get('/:guildId/autoreply', async (req, res) => {
+  const usersService = new UsersService()
+  const discordUsers = new DiscordRestUsersService()
+  const { authorization } = req.headers
+
+  if (!authorization || authorization.trim() === '') {
+    res.status(401).send({ message: 'Invalid authorization token' })
+    return
+  }
+
+  let decoded: jwt.JwtPayload
+
+  try {
+    const payload = jwt.verify(authorization, SECRET)
+    decoded = payload as jwt.JwtPayload
+  } catch (_err) {
+    res.status(401).send({ message: 'Invalid authorization token' })
+    return
+  }
+
+  const { guildId } = req.params
+
+  const user = await usersService.getUser(decoded.id)
+  const guild = await discordUsers.getUserGuild(user.accessToken, guildId)
+  const permissions = BigInt(guild.permissions)
+
+  const hasPermission = (permissions & Permissions.FLAGS.MANAGE_GUILD) === (Permissions.FLAGS.MANAGE_GUILD)
+
+  if (!hasPermission) {
+    res.status(401).json({ message: 'Unauthorized' })
+    return
+  }
+
+  const autoReply = await prisma.autoReply.findMany()
+
+  res.status(200).json({ data: autoReply })
+})
 
 router.post('/:guildId/autoreply', async (req, res) => {
+  const usersService = new UsersService()
+  const discordUsers = new DiscordRestUsersService()
+  const { authorization } = req.headers
+
+  if (!authorization || authorization.trim() === '') {
+    res.status(401).send({ message: 'Invalid authorization token' })
+    return
+  }
+
+  let decoded: jwt.JwtPayload
+
+  try {
+    const payload = jwt.verify(authorization, SECRET)
+    decoded = payload as jwt.JwtPayload
+  } catch (_err) {
+    res.status(401).send({ message: 'Invalid authorization token' })
+    return
+  }
+
+  const plugin = client.plugins.get('autoReply') as AutoReply
+
   const { reply } = req.body
   const { guildId } = req.params
 
-  const autoReply = await prisma.autoReply.create({
-    data: {
-      trigger: reply.trigger,
-      response: reply.response,
-      guild: {
-        connectOrCreate: {
-          where: {
-            id: guildId
-          },
-          create: {
-            id: guildId
-          }
-        }
-      }
-    }
+  const user = await usersService.getUser(decoded.id)
+  const guild = await discordUsers.getUserGuild(user.accessToken, guildId)
+  const permissions = BigInt(guild.permissions)
+
+  const hasPermission = (permissions & Permissions.FLAGS.MANAGE_GUILD) === (Permissions.FLAGS.MANAGE_GUILD)
+
+  if (!hasPermission) {
+    res.status(401).json({ message: 'Unauthorized' })
+    return
+  }
+
+  const autoReply = await plugin.createReply(guildId, {
+    trigger: reply.trigger,
+    response: reply.response
   })
 
   res.status(201).json({ data: autoReply })
 })
 
 router.delete('/:guildId/autoreply', async (req, res) => {
-  // TEMP
-  if (!req.headers.authorization) {
-    res.status(401).json({ message: 'Unauthorized' })
+  const usersService = new UsersService()
+  const discordUsers = new DiscordRestUsersService()
+  const { authorization } = req.headers
+
+  if (!authorization || authorization.trim() === '') {
+    res.status(401).send({ message: 'Invalid authorization token' })
+    return
   }
 
-  const { replyId } = req.query
+  let decoded: jwt.JwtPayload
+
+  try {
+    const payload = jwt.verify(authorization, SECRET)
+    decoded = payload as jwt.JwtPayload
+  } catch (_err) {
+    res.status(401).send({ message: 'Invalid authorization token' })
+    return
+  }
+
+  const { guildId } = req.params
+
+  const user = await usersService.getUser(decoded.id)
+  const guild = await discordUsers.getUserGuild(user.accessToken, guildId)
+  const permissions = BigInt(guild.permissions)
+
+  const hasPermission = (permissions & Permissions.FLAGS.MANAGE_GUILD) === (Permissions.FLAGS.MANAGE_GUILD)
+
+  if (!hasPermission) {
+    res.status(401).json({ message: 'Unauthorized' })
+    return
+  }
+
+  const { replyId } = req.query as { replyId: string } // aiai ts
 
   if (!replyId || typeof replyId !== 'string') {
     res.status(400).json({ message: 'Invalid autoreply id' })
   }
 
-  await prisma.autoReply.delete({
-    where: {
-      id: replyId
-    }
-  })
+  const plugin = client.plugins.get('autoReply') as AutoReply
+
+  plugin.deleteReply(req.params.guildId, replyId)
 
   res.status(200).json({ message: 'Deleted' })
 })

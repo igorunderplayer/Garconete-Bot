@@ -1,5 +1,7 @@
+import { DiscordRestUsersService } from '@services/DiscordRestUsersService'
 import { Router } from 'express'
 import jwt from 'jsonwebtoken'
+import { prisma } from 'prisma'
 import { fetch } from 'undici'
 const router = Router()
 
@@ -15,6 +17,7 @@ router.post('/login', async (req, res) => {
     res.status(400).json({ message: 'Invalid oauth code' })
   }
 
+  const users = new DiscordRestUsersService()
   const { CLIENT_ID, CLIENT_SECRET } = process.env
 
   const encodedParams = new URLSearchParams()
@@ -46,17 +49,27 @@ router.post('/login', async (req, res) => {
   // eslint-disable-next-line camelcase
   const data = await response.json() as { token_type: string, access_token: string }
 
-  const userInfo = await fetch('https://discord.com/api/users/@me', {
-    headers: {
-      Authorization: `${data.token_type} ${data.access_token}`
+  const userData = await users.getUserData(data.access_token)
+
+  const token = jwt.sign(
+    {
+      id: userData.id
+    }, SECRET,
+    {
+      expiresIn: 60 * 60 * 24 // 1 day
     }
-  }).then(r => r.json()) as { id: string }
+  )
 
-  const token = jwt.sign({
-    id: userInfo.id
-  }, SECRET)
+  await prisma.user.update({
+    where: {
+      id: userData.id
+    },
+    data: {
+      accessToken: data.access_token
+    }
+  })
 
-  res.json({ message: 'Logged lol', data: userInfo, token })
+  res.json({ message: 'Logged lol', data: userData, token })
 })
 
 export default router

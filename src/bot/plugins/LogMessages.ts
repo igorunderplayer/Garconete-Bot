@@ -10,6 +10,8 @@ export default class LogMessages extends ClientPlugin {
     })
   }
 
+  onSetup () {}
+
   onMessageCreate (_message: Message) {
     console.log('a message was sent :)')
   }

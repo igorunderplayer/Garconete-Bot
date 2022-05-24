@@ -14,6 +14,8 @@ export default abstract class ClientPlugin {
     Object.assign(this, options)
   }
 
+  abstract onSetup(): any
+
   abstract onMessageCreate(message: Message): any
   abstract onMessageDelete(message: Message | PartialMessage): any
 }

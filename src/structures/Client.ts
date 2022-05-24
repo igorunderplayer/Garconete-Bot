@@ -37,6 +37,7 @@ export default class GarconeteClient extends Client {
   setupPlugins (plugins: ClientPlugin[]) {
     for (const plugin of plugins) {
       this.plugins.set(plugin.identifier, plugin)
+      plugin.onSetup()
     }
 
     this.on('messageCreate', (message) => {

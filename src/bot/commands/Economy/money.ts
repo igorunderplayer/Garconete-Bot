@@ -1,6 +1,6 @@
 import GarconeteClient from '@structures/Client'
 import Command, { CommandRun } from '@structures/Command'
-import { UserServices } from '@services/UserServices'
+import { UsersService } from '@services/UsersService'
 
 export default class Money extends Command {
   constructor (client: GarconeteClient) {
@@ -18,9 +18,9 @@ export default class Money extends Command {
   }
 
   async run ({ interaction, t } : CommandRun) {
-    const userServices = new UserServices()
+    const usersService = new UsersService()
     const user = interaction.options.getUser('user') ?? interaction.user
-    const { money } = await userServices.getUser(user.id)
+    const { money } = await usersService.getUser(user.id)
 
     interaction.reply(`${user.username}'s money: ${money}`)
   }

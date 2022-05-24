@@ -1,19 +1,19 @@
 import GarconeteClient from '@structures/Client'
 import { Message } from 'discord.js'
-import { UserServices } from '@services/UserServices'
+import { UsersService } from '@services/UsersService'
 
 const devUsers = process.env.DEV_USERS.split(' ')
 
 const blacklist = {
   run: async (client: GarconeteClient, message: Message, args: string[]) => {
     if (!devUsers.includes(message.author.id)) return
-    const userServices = new UserServices()
+    const usersService = new UsersService()
     const [userId] = args
     if (!userId) return message.reply('Por favor, especifique um usuário para adicionar a lista negra.')
 
-    const user = await userServices.getUser(userId)
+    const user = await usersService.getUser(userId)
 
-    await userServices.updateUser(user.id, {
+    await usersService.updateUser(user.id, {
       blacklisted: !user.blacklisted
     })
 

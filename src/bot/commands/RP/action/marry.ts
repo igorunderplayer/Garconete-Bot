@@ -1,7 +1,7 @@
 import Command, { CommandRun } from '@structures/Command'
 import GarconeteClient from '@structures/Client'
 import { Message, MessageActionRow, MessageButton } from 'discord.js'
-import { UserServices } from '@services/UserServices'
+import { UsersService } from '@services/UsersService'
 
 export default class Marry extends Command {
   constructor (client: GarconeteClient) {
@@ -23,7 +23,7 @@ export default class Marry extends Command {
   async run ({ interaction, t } : CommandRun) {
     await interaction.deferReply()
     const user = interaction.options.getUser('user')
-    const userServices = new UserServices()
+    const usersService = new UsersService()
 
     // "easter egg"
     if (user.id === this.client.user.id) {
@@ -37,7 +37,7 @@ export default class Marry extends Command {
     }
 
     // const dbUser = await this.client.database.getUser(interaction.user.id)
-    const dbUser = await userServices.getUser(interaction.user.id)
+    const dbUser = await usersService.getUser(interaction.user.id)
 
     if (dbUser.money < 250) {
       await interaction.editReply(t('action', 'marry.toopoor', interaction.locale))
@@ -76,7 +76,7 @@ export default class Marry extends Command {
 
       collector.on('collect', async int => {
         if (int.customId === 'yeah') {
-          await userServices.updateUser(interaction.user.id, {
+          await usersService.updateUser(interaction.user.id, {
             marriedWithId: user.id
           })
 

@@ -21,6 +21,7 @@ model User {
   marriedWithId   String?  @unique
   marriedWith     User?    @relation("MarriedWith", fields: [marriedWithId], references: [id])
   marriedWithUser User?    @relation("MarriedWith")
+  accessToken     String?   @unique
 }
 
 model Guild {

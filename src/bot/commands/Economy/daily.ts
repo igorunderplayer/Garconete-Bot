@@ -1,6 +1,6 @@
 import GarconeteClient from '@structures/Client'
 import Command, { CommandRun } from '@structures/Command'
-import { UserServices } from '@services/UserServices'
+import { UsersService } from '@services/UsersService'
 import convertMilliseconds from '@utils/convertMilliseconds'
 
 export default class Daily extends Command {
@@ -16,11 +16,11 @@ export default class Daily extends Command {
   async run ({ interaction, t } : CommandRun) {
     await interaction.deferReply()
 
-    const userServices = new UserServices()
+    const usersService = new UsersService()
 
     const DAY_IN_MS = 1000 * 60 * 60 * 24
 
-    const user = await userServices.getUser(interaction.user.id)
+    const user = await usersService.getUser(interaction.user.id)
 
     if ((Date.now() - user.dailyRewardAt.getTime()) < DAY_IN_MS) {
       const { hours, minutes, seconds } = convertMilliseconds(DAY_IN_MS - (Date.now() - user.dailyRewardAt.getTime()))
@@ -31,7 +31,7 @@ export default class Daily extends Command {
 
     const reward = 100
 
-    const updatedUser = await userServices.updateUser(interaction.user.id, {
+    const updatedUser = await usersService.updateUser(interaction.user.id, {
       dailyRewardAt: new Date(),
       money: user.money + reward
     })

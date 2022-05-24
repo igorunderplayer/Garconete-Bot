@@ -17,10 +17,6 @@ app.use(express.json())
 app.use('/auth', routes.auth)
 app.use('/guilds', routes.guild)
 
-app.get('/hello', (req, res) => {
-  res.send('Hello!')
-})
-
 app.get('/commands', (req, res) => {
   const commands = client.commands.filter(cmd => !cmd.testing).map(command => {
     return {
