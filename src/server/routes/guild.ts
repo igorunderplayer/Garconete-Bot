@@ -9,6 +9,6 @@ const SECRET = process.env.JWT_SECRET
 
 router.get('/:guildId/autoreply', new GetGuildAutoRepliesController().handle)
 router.post('/:guildId/autoreply', new CreateGuildAutoReplyController().handle)
-router.delete('/:guildId/autoreply', new DeleteGuildAutoReplyController().handle)
+router.delete('/:guildId/autoreply/:id', new DeleteGuildAutoReplyController().handle)
 
 export default router

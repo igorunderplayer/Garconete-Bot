@@ -31,7 +31,7 @@ class DeleteGuildAutoReplyController {
       return
     }
 
-    const { guildId } = req.params
+    const { guildId, id } = req.params
 
     const user = await usersService.getUser(decoded.id)
     const guild = await discordUsers.getUserGuild(user.accessToken, guildId)
@@ -44,15 +44,13 @@ class DeleteGuildAutoReplyController {
       return
     }
 
-    const { replyId } = req.query as { replyId: string } // aiai ts
-
-    if (!replyId || typeof replyId !== 'string') {
+    if (!id || typeof id !== 'string') {
       res.status(400).json({ message: 'Invalid autoreply id' })
     }
 
     const plugin = client.plugins.get('autoReply') as AutoReply
 
-    plugin.deleteReply(req.params.guildId, replyId)
+    await plugin.deleteReply(guildId, id)
 
     res.status(200).json({ message: 'Deleted' })
   }
