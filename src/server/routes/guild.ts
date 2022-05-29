@@ -5,7 +5,6 @@ import { CreateGuildAutoReplyController } from 'server/controllers/CreateGuildAu
 import { DeleteGuildAutoReplyController } from 'server/controllers/DeleteGuildAutoReplyController'
 
 const router = Router()
-const SECRET = process.env.JWT_SECRET
 
 router.get('/:guildId/autoreply', new GetGuildAutoRepliesController().handle)
 router.post('/:guildId/autoreply', new CreateGuildAutoReplyController().handle)

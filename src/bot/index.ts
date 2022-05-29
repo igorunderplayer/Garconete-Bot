@@ -3,7 +3,7 @@ import { Options } from 'discord.js'
 import { join } from 'path'
 
 import AutoReply from './plugins/AutoReply'
-import LogMessages from './plugins/LogMessages'
+// import LogMessages from './plugins/LogMessages'
 
 const client = new Client({
   commandsPath: join(__dirname, 'commands'),
@@ -18,7 +18,7 @@ const client = new Client({
 
 client.loadEvents()
 client.setupPlugins([
-  new LogMessages(client),
+  // new LogMessages(client),
   new AutoReply(client)
 ])
 

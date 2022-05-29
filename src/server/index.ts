@@ -16,6 +16,7 @@ app.use(express.json())
 
 app.use('/auth', routes.auth)
 app.use('/guilds', routes.guild)
+app.use('/users', routes.users)
 
 app.get('/commands', (req, res) => {
   const commands = client.commands.filter(cmd => !cmd.testing).map(command => {
