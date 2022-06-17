@@ -4,6 +4,7 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
+    "start": "yarn prisma migrate deploy && yarn dev",
     "dev": "ts-node-dev -r tsconfig-paths/register --expose-gc --ignore-watch node_modules --transpile-only --exit-child --respawn src/index.ts"
   },
   "devDependencies": {
