@@ -35,6 +35,6 @@
     "firebase": "^9.6.11",
     "jsonwebtoken": "^8.5.1",
     "nekos.life": "^3.0.0",
-    "undici": "^5.0.0"
+    "undici": "^5.5.1"
   }
 }
