@@ -1,9 +1,9 @@
 import applyPlaceholders from './placeholders'
 import messages from '../messages.json'
 
-export default function translate (base: string, command: string, prop: string, locale: string, obj?: { [key: string]: any }) {
-  const phrase = messages[base][command][prop]
-  const translated = phrase[locale] ?? phrase['en-US']
+export default function translate (string: string, locale: string, obj?: object) {
+  const phrase = string.split('.').reduce((acc, curr) => acc[curr], messages)
+  const translated = phrase[locale]
   return !obj
     ? translated
     : applyPlaceholders(

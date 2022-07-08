@@ -23,7 +23,7 @@ export default class InteractionCreate extends Event<'interactionCreate'> {
 
       try {
         const command = this.client.commands.get(interaction.commandName)
-        await command.run({ interaction, t: (command, prop, locale, obj) => translate('commands', command, prop, locale, obj) })
+        await command.run({ interaction, t: (command, prop, locale, obj) => translate(`commands.${command}.${prop}`, locale, obj) })
       } catch (err) {
         const errorLogsChannel = await this.client.channels.fetch(process.env.DISCORD_ERROR_LOGS_CHANNEL) as TextChannel
 
@@ -37,9 +37,9 @@ export default class InteractionCreate extends Event<'interactionCreate'> {
 
         console.error('[Error]', err)
         interaction.reply({
-          content: translate('events', 'interactionCreate', 'command.error', interaction.locale), ephemeral: true
+          content: translate('events.interactionCreate.command.error', interaction.locale), ephemeral: true
         }).catch(() => interaction.editReply({
-          content: translate('events', 'interactionCreate', 'command.error', interaction.locale)
+          content: translate('events.interactionCreate.command.error', interaction.locale)
         }))
       }
     }

@@ -36,8 +36,8 @@ export default class Marry extends Command {
       return
     }
 
-    // const dbUser = await this.client.database.getUser(interaction.user.id)
     const dbUser = await usersService.getUser(interaction.user.id)
+    const askedUser = await usersService.getUser(user.id)
 
     if (dbUser.money < 250) {
       await interaction.editReply(t('action', 'marry.toopoor', interaction.locale))
@@ -46,54 +46,59 @@ export default class Marry extends Command {
 
     if (dbUser.marriedWithId) {
       const marriedWith = await this.client.users.fetch(dbUser.marriedWithId)
-      interaction.editReply(t('action', 'marry.alread', interaction.locale, { marriedWith }))
-    } else {
-      const row = new MessageActionRow()
-        .addComponents([
-          new MessageButton()
-            .setStyle('SUCCESS')
-            .setEmoji('✅')
-            .setCustomId('yeah'),
-          new MessageButton()
-            .setStyle('DANGER')
-            .setEmoji('❌')
-            .setCustomId('no')
-        ])
-
-      await interaction.editReply({
-        content: t('action', 'marry.ask', interaction.locale, { asksTo: user, user: interaction.user }),
-        components: [row]
-      })
-
-      const reply = await interaction.fetchReply() as Message<true>
-
-      const collector = interaction.channel.createMessageComponentCollector({
-        filter: int => int.user.id === user.id && int.message.id === reply.id,
-        componentType: 'BUTTON',
-        time: 30000,
-        max: 1
-      })
-
-      collector.on('collect', async int => {
-        if (int.customId === 'yeah') {
-          await usersService.updateUser(interaction.user.id, {
-            marriedWithId: user.id
-          })
-
-          int.reply(t('action', 'marry.happyEnding', interaction.locale, { asksTo: user, user: interaction.user }))
-        } else {
-          int.reply(t('action', 'marry.sadEnding', interaction.locale, { asksTo: user, user: interaction.user }))
-        }
-      })
-
-      collector.on('end', (_collected, reason) => {
-        if (reason === 'time') {
-          reply.edit({
-            content: t('action', 'marry.ignored', interaction.locale, { asksTo: user.username, user: interaction.user }),
-            components: []
-          })
-        }
-      })
+      await interaction.editReply(t('action', 'marry.alread', interaction.locale, { marriedWith }))
+      return
     }
+
+    if (askedUser.marriedWithId) {
+      await interaction.editReply(t('action', 'marry.otherAlreadMaried', interaction.locale))
+    }
+
+    const row = new MessageActionRow()
+      .addComponents([
+        new MessageButton()
+          .setStyle('SUCCESS')
+          .setEmoji('✅')
+          .setCustomId('yeah'),
+        new MessageButton()
+          .setStyle('DANGER')
+          .setEmoji('❌')
+          .setCustomId('no')
+      ])
+
+    await interaction.editReply({
+      content: t('action', 'marry.ask', interaction.locale, { asksTo: user, user: interaction.user }),
+      components: [row]
+    })
+
+    const reply = await interaction.fetchReply() as Message<true>
+
+    const collector = interaction.channel.createMessageComponentCollector({
+      filter: int => int.user.id === user.id && int.message.id === reply.id,
+      componentType: 'BUTTON',
+      time: 30000,
+      max: 1
+    })
+
+    collector.on('collect', async int => {
+      if (int.customId === 'yeah') {
+        await usersService.updateUser(interaction.user.id, {
+          marriedWithId: user.id
+        })
+
+        int.reply(t('action', 'marry.happyEnding', interaction.locale, { asksTo: user, user: interaction.user }))
+      } else {
+        int.reply(t('action', 'marry.sadEnding', interaction.locale, { asksTo: user, user: interaction.user }))
+      }
+    })
+
+    collector.on('end', (_collected, reason) => {
+      if (reason === 'time') {
+        reply.edit({
+          content: t('action', 'marry.ignored', interaction.locale, { asksTo: user.username, user: interaction.user }),
+          components: []
+        })
+      }
+    })
   }
 }
