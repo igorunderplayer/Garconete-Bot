@@ -1,7 +1,7 @@
 import Command, { CommandRun } from '@structures/Command'
 import GarconeteClient from '@structures/Client'
 
-import { UserServices } from '@services/UserServices'
+import { UsersService } from '@services/UsersService'
 
 export default class Register extends Command {
   constructor (client: GarconeteClient) {
@@ -17,7 +17,7 @@ export default class Register extends Command {
   async run ({ interaction, t } : CommandRun) {
     interaction.reply('registrando vc...   (cmd de testes)')
 
-    await new UserServices().createUser(interaction.user.id)
+    await new UsersService().createUser(interaction.user.id)
 
     interaction.editReply('vc foi registrado! (confia)')
   }

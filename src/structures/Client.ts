@@ -5,6 +5,7 @@ import { readdir } from 'fs/promises'
 import Command from './Command'
 
 import { join } from 'path'
+import ClientPlugin from './ClientPlugin'
 
 export interface GarconeteOptions {
   commandsPath: string
@@ -17,17 +18,39 @@ export default class GarconeteClient extends Client {
   commands: Collection<string, Command>
   blacklistedIds: string[]
   request: typeof request
+  plugins: Collection<string, ClientPlugin>
 
   constructor (options: GarconeteOptions) {
     super(options.discordClientOptions)
 
     this.blacklistedIds = []
     this.commands = new Collection()
+    this.plugins = new Collection()
     this.request = request
     this._options = {
       commandsPath: options.commandsPath,
       eventsPath: options.eventsPath
     }
+  }
+
+  // Testing 2
+  setupPlugins (plugins: ClientPlugin[]) {
+    for (const plugin of plugins) {
+      this.plugins.set(plugin.identifier, plugin)
+      plugin.onSetup()
+    }
+
+    this.on('messageCreate', (message) => {
+      this.plugins.forEach((plugin) => {
+        plugin.onMessageCreate(message)
+      })
+    })
+
+    this.on('messageDelete', (message) => {
+      this.plugins.forEach((plugin) => {
+        plugin.onMessageDelete(message)
+      })
+    })
   }
 
   async loadEvents () {

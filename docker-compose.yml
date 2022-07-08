@@ -12,8 +12,8 @@ services:
       - "8080:8080"
 
   postgres:
-    image: postgres:14.2-alpine
     restart: always
+    image: postgres:14.2-alpine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: garconete123

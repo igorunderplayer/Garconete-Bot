@@ -19,7 +19,7 @@ export default class MessageCreate extends Event<'messageCreate'> {
     ) {
       const [, cmd, ...args] = message.content.trim().split(' ')
 
-      if (!cmd) message.reply('Use "/" para ver a lista de comandos (slashs meus e de outros bots)')
+      if (!cmd) message.reply('Meus comandos agora são todos baseados em "slash commands", você pode usar "/" para ver a lista de comandos (slashs meus e de outros bots)')
       if (cmd === 'die') message.reply(':flushed: no')
       if (cmd === 'sexo') message.reply('a noite toda bb rs :fire::smirk:')
 

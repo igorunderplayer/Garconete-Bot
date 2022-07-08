@@ -18,7 +18,21 @@ model User {
   money           Int      @default(100)
   premium         Boolean  @default(false)
   blacklisted     Boolean  @default(false)
-  marriedWithId   String?
+  marriedWithId   String?  @unique
   marriedWith     User?    @relation("MarriedWith", fields: [marriedWithId], references: [id])
   marriedWithUser User?    @relation("MarriedWith")
+  accessToken     String?  @unique
+}
+
+model Guild {
+  id          String      @id
+  autoReplies AutoReply[]
+}
+
+model AutoReply {
+  id       String @id @default(cuid())
+  guildId  String
+  guild    Guild  @relation(fields: [guildId], references: [id])
+  trigger  String
+  response String
 }
