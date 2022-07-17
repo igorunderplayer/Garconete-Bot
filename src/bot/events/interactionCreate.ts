@@ -1,4 +1,4 @@
-import { ClientEvents, MessageEmbed, TextChannel } from 'discord.js'
+import { ClientEvents, EmbedBuilder, TextChannel, Colors, InteractionType } from 'discord.js'
 import GarconeteClient from '@structures/Client'
 import Event from '@structures/Event'
 
@@ -13,7 +13,7 @@ export default class InteractionCreate extends Event<'interactionCreate'> {
   }
 
   async handle ([interaction]: ClientEvents['interactionCreate']) {
-    if (interaction.isCommand()) {
+    if (interaction.type === InteractionType.ApplicationCommand) {
       if (this.client.blacklistedIds.indexOf(interaction.user.id) !== -1) {
         return interaction.reply({
           content: 'you are blacklisted',
@@ -27,9 +27,12 @@ export default class InteractionCreate extends Event<'interactionCreate'> {
       } catch (err) {
         const errorLogsChannel = await this.client.channels.fetch(process.env.DISCORD_ERROR_LOGS_CHANNEL) as TextChannel
 
-        const errorEmbed = new MessageEmbed()
-          .setColor('RED')
-          .addField('Error', `\`\`\`js\n${err}\n\`\`\``)
+        const errorEmbed = new EmbedBuilder()
+          .setColor(Colors.Red)
+          .addFields([{
+            name: 'Error',
+            value: `\`\`\`js\n${err}\n\`\`\``
+          }])
 
         errorLogsChannel.send({
           embeds: [errorEmbed]

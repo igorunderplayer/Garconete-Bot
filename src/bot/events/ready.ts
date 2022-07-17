@@ -1,6 +1,6 @@
 import Event from '@structures/Event'
 import GarconeteClient from '@structures/Client'
-import { ClientEvents } from 'discord.js'
+import { ActivityType, ClientEvents } from 'discord.js'
 import { prisma } from '../../prisma'
 
 export default class Ready extends Event<'ready'> {
@@ -30,10 +30,10 @@ export default class Ready extends Event<'ready'> {
       ignoreCommandDirectory: ['MessageCommands']
     })
 
-    this.client.user.setStatus('idle')
+    this.client.user.setStatus('online')
     this.client.user.setActivity({
-      name: 'sexo',
-      type: 'WATCHING'
+      name: 'you',
+      type: ActivityType.Watching
     })
   }
 }

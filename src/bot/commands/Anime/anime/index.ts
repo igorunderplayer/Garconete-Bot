@@ -1,5 +1,6 @@
 import GarconeteClient from '@structures/Client'
 import Command, { CommandRun } from '@structures/Command'
+import { ApplicationCommandOptionType } from 'discord.js'
 
 import OwOify from './owoify'
 import Wallpaper from './wallpaper'
@@ -18,7 +19,8 @@ export default class Anime extends Command {
   }
 
   async run ({ interaction, t }: CommandRun) {
-    switch (interaction.options.getSubcommand()) {
+    const subCommand = interaction.options.data.find(opt => opt.type === ApplicationCommandOptionType.Subcommand)
+    switch (subCommand.name) {
       case 'wallpaper': {
         await new Wallpaper(this.client).run({ interaction, t })
         break

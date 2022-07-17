@@ -1,6 +1,7 @@
 import Command, { CommandRun } from '@structures/Command'
 import GarconeteClient from '@structures/Client'
-import { Message, MessageActionRow, MessageButton } from 'discord.js'
+import { ApplicationCommandOptionType, ButtonStyle, ComponentType, Message } from 'discord.js'
+import { ActionRowBuilder, ButtonBuilder } from '@discordjs/builders'
 import { UsersService } from '@services/UsersService'
 
 export default class Marry extends Command {
@@ -8,12 +9,12 @@ export default class Marry extends Command {
     super({
       name: 'marry',
       description: 'marry with a user',
-      type: 'SUB_COMMAND',
+      type: ApplicationCommandOptionType.Subcommand,
       options: [{
         name: 'user',
         required: true,
         description: 'your love',
-        type: 'USER'
+        type: ApplicationCommandOptionType.User
       }]
     })
 
@@ -54,15 +55,15 @@ export default class Marry extends Command {
       await interaction.editReply(t('action', 'marry.otherAlreadMaried', interaction.locale))
     }
 
-    const row = new MessageActionRow()
+    const row = new ActionRowBuilder()
       .addComponents([
-        new MessageButton()
-          .setStyle('SUCCESS')
-          .setEmoji('✅')
+        new ButtonBuilder()
+          .setStyle(ButtonStyle.Success)
+          .setEmoji({ name: '✅' })
           .setCustomId('yeah'),
-        new MessageButton()
-          .setStyle('DANGER')
-          .setEmoji('❌')
+        new ButtonBuilder()
+          .setStyle(ButtonStyle.Danger)
+          .setEmoji({ name: '❌' })
           .setCustomId('no')
       ])
 
@@ -75,7 +76,7 @@ export default class Marry extends Command {
 
     const collector = interaction.channel.createMessageComponentCollector({
       filter: int => int.user.id === user.id && int.message.id === reply.id,
-      componentType: 'BUTTON',
+      componentType: ComponentType.Button,
       time: 30000,
       max: 1
     })

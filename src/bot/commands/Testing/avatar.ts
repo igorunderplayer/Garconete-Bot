@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js'
+import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
 import GarconeteClient from '@structures/Client'
 import Command, { CommandRun } from '@structures/Command'
 
@@ -10,7 +10,7 @@ export default class Avatar extends Command {
       options: [{
         name: 'user',
         description: 'Usuario para roubar o avatar',
-        type: 'USER',
+        type: ApplicationCommandOptionType.User,
         required: false
       }]
     })
@@ -25,7 +25,7 @@ export default class Avatar extends Command {
       user: user.username
     })
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle(title)
       .setURL(avatar)
       .setImage(avatar)

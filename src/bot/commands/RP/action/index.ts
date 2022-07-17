@@ -1,3 +1,4 @@
+import { ApplicationCommandOptionType } from 'discord.js'
 import Command, { CommandRun } from '@structures/Command'
 import GarconeteClient from '@structures/Client'
 
@@ -19,9 +20,8 @@ export default class Actions extends Command {
   }
 
   async run ({ interaction, t } : CommandRun) {
-    const subCommand = interaction.options.getSubcommand()
-
-    switch (subCommand) {
+    const subCommand = interaction.options.data.find(opt => opt.type === ApplicationCommandOptionType.Subcommand)
+    switch (subCommand.name) {
       case 'hug': {
         await new Hug(this.client).run({ interaction, t })
         break

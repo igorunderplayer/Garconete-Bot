@@ -17,6 +17,7 @@ type CommandData = ApplicationCommandData & {
   nsfw?: boolean
 
   options?: ApplicationCommandOption | any // a
+  handleSubCommands?: boolean
   subCommands?: any
 }
 
@@ -34,6 +35,7 @@ export default abstract class Command {
   public name: CommandData['name']
   public description: CommandData['description']
   public options: CommandData['options']
+  public handleSubCommands: CommandData['handleSubCommands']
 
   public subCommands: CommandData['subCommands']
   public testing: CommandData['testing']

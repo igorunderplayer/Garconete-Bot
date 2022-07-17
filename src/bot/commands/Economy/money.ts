@@ -1,6 +1,7 @@
 import GarconeteClient from '@structures/Client'
 import Command, { CommandRun } from '@structures/Command'
 import { UsersService } from '@services/UsersService'
+import { ApplicationCommandOptionType } from 'discord.js'
 
 export default class Money extends Command {
   constructor (client: GarconeteClient) {
@@ -8,7 +9,7 @@ export default class Money extends Command {
       name: 'money',
       description: 'shows your or other user\' money',
       options: [{
-        type: 'USER',
+        type: ApplicationCommandOptionType.User,
         name: 'user',
         description: 'user who u want see money'
       }]

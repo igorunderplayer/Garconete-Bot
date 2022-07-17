@@ -1,7 +1,7 @@
 import GarconeteClient from '@structures/Client'
 import Command, { CommandRun } from '@structures/Command'
 
-import { MessageEmbed } from 'discord.js'
+import { ApplicationCommandOptionType, Colors, EmbedBuilder } from 'discord.js'
 import NekoClient from 'nekos.life'
 const nekos = new NekoClient()
 
@@ -10,12 +10,12 @@ export default class Hug extends Command {
     super({
       name: 'hug',
       description: 'hugs a user',
-      type: 'SUB_COMMAND',
+      type: ApplicationCommandOptionType.Subcommand,
       options: [{
         name: 'user',
         description: 'user to get a hug',
         required: true,
-        type: 'USER'
+        type: ApplicationCommandOptionType.User
       }]
     })
 
@@ -27,8 +27,8 @@ export default class Hug extends Command {
 
     const hug = await nekos.hug()
 
-    const embed = new MessageEmbed()
-      .setColor('YELLOW')
+    const embed = new EmbedBuilder()
+      .setColor(Colors.Yellow)
       .setImage(hug.url)
       .setDescription(t('action', 'hug.reply', interaction.locale, {
         author: interaction.user,

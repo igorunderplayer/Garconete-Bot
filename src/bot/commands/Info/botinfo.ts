@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js'
+import { EmbedBuilder } from 'discord.js'
 import GarconeteClient from '@structures/Client'
 import Command, { CommandRun } from '@structures/Command'
 import convertMilliseconds from '@utils/convertMilliseconds'
@@ -25,12 +25,14 @@ export default class BotInfo extends Command {
 
     const { days, hours, minutes } = convertMilliseconds(this.client.uptime)
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle(title)
-      .addField(statisticsText, `Servers: ${this.client.guilds.cache.size}`)
-      .addField(uptimeText, `${days}d ${hours}h ${minutes}m`)
-      .addField(memoryText, `RSS: ${rss}mb | Heap: total: ${heapTotal}mb - used: ${heapUsed}mb`)
-      .addField('🐛 Source', '[GitHub](https://github.com/igorunderplayer/Garconete-Bot)')
+      .addFields([
+        { name: statisticsText, value: `Servers: ${this.client.guilds.cache.size}` },
+        { name: uptimeText, value: `${days}d ${hours}h ${minutes}m` },
+        { name: memoryText, value: `RSS: ${rss}mb | Heap: total: ${heapTotal}mb - used: ${heapUsed}mb` },
+        { name: '🐛 Source', value: '[GitHub](https://github.com/igorunderplayer/Garconete-Bot)' }
+      ])
 
     interaction.reply({ embeds: [embed] })
   }

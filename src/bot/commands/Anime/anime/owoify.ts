@@ -1,5 +1,6 @@
 import GarconeteClient from '@structures/Client'
 import Command, { CommandRun } from '@structures/Command'
+import { ApplicationCommandOptionType } from 'discord.js'
 
 import NekoClient from 'nekos.life'
 const nekos = new NekoClient()
@@ -9,9 +10,9 @@ export default class OwOify extends Command {
     super({
       name: 'owoify',
       description: 'OwO',
-      type: 'SUB_COMMAND',
+      type: ApplicationCommandOptionType.Subcommand,
       options: [{
-        type: 'STRING',
+        type: ApplicationCommandOptionType.String,
         name: 'input',
         description: 'text to be owoified?',
         required: true
@@ -22,7 +23,7 @@ export default class OwOify extends Command {
   }
 
   async run ({ interaction, t }: CommandRun) {
-    const text = interaction.options.getString('input')
+    const text = interaction.options.get('input', true).value as string
     const { owo } = await nekos.OwOify({
       text
     })

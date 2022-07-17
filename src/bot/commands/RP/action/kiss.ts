@@ -1,6 +1,6 @@
 import Command, { CommandRun } from '@structures/Command'
 import GarconeteClient from '@structures/Client'
-import { MessageEmbed } from 'discord.js'
+import { ApplicationCommandOptionType, Colors, EmbedBuilder } from 'discord.js'
 
 import NekoClient from 'nekos.life'
 const nekos = new NekoClient()
@@ -12,12 +12,12 @@ export default class Kiss extends Command {
     super({
       name: 'kiss',
       description: 'kiss a user',
-      type: 'SUB_COMMAND',
+      type: ApplicationCommandOptionType.Subcommand,
       options: [{
         name: 'user',
         required: true,
         description: 'user that will receive a nice kiss',
-        type: 'USER'
+        type: ApplicationCommandOptionType.User
       }]
     })
 
@@ -37,8 +37,8 @@ export default class Kiss extends Command {
     // const gif = gifs[Math.floor(Math.random() * gifs.length)]
     const kiss = await nekos.kiss()
 
-    const embed = new MessageEmbed()
-      .setColor('PURPLE')
+    const embed = new EmbedBuilder()
+      .setColor(Colors.Purple)
       .setImage(kiss.url)
       .setDescription(t('action', 'kiss.reply', interaction.locale, {
         author: interaction.user,
