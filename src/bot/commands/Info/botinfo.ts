@@ -1,39 +1,35 @@
 import { EmbedBuilder } from 'discord.js'
-import GarconeteClient from '@structures/Client'
-import Command, { CommandRun } from '@structures/Command'
+import { CommandRun } from '@structures/Command'
 import convertMilliseconds from '@utils/convertMilliseconds'
+import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
 
-export default class BotInfo extends Command {
-  constructor (client: GarconeteClient) {
-    super({
-      name: 'botinfo',
-      description: 'mostra minhas informações'
-    })
+export const command = new GarconeteCommandBuilder()
+  .setName('botinfo')
+  .setDescription('show some of my informations')
+  .setDescriptionLocalizations({
+    'pt-BR': 'mostra minhas informações'
+  })
 
-    this.client = client
-  }
+export const run = ({ client, interaction, t }: CommandRun) => {
+  const title = t(command.name, 'embed.title', interaction.locale)
+  const memoryText = t(command.name, 'embed.field[memory].name', interaction.locale)
+  const statisticsText = t(command.name, 'embed.field[statistics].name', interaction.locale)
+  const uptimeText = t(command.name, 'embed.field[uptime].name', interaction.locale)
 
-  async run ({ interaction, t } : CommandRun) {
-    const title = t(this.name, 'embed.title', interaction.locale)
-    const memoryText = t(this.name, 'embed.field[memory].name', interaction.locale)
-    const statisticsText = t(this.name, 'embed.field[statistics].name', interaction.locale)
-    const uptimeText = t(this.name, 'embed.field[uptime].name', interaction.locale)
+  const heapTotal = ~~(process.memoryUsage().heapTotal / 1024 / 1024)
+  const heapUsed = ~~(process.memoryUsage().heapTotal / 1024 / 1024)
+  const rss = ~~(process.memoryUsage().rss / 1024 / 1024)
 
-    const heapTotal = ~~(process.memoryUsage().heapTotal / 1024 / 1024)
-    const heapUsed = ~~(process.memoryUsage().heapTotal / 1024 / 1024)
-    const rss = ~~(process.memoryUsage().rss / 1024 / 1024)
+  const { days, hours, minutes } = convertMilliseconds(client.uptime)
 
-    const { days, hours, minutes } = convertMilliseconds(this.client.uptime)
+  const embed = new EmbedBuilder()
+    .setTitle(title)
+    .addFields([
+      { name: statisticsText, value: `Servers: ${client.guilds.cache.size}` },
+      { name: uptimeText, value: `${days}d ${hours}h ${minutes}m` },
+      { name: memoryText, value: `RSS: ${rss}mb | Heap: total: ${heapTotal}mb - used: ${heapUsed}mb` },
+      { name: '🐛 Source', value: '[GitHub](https://github.com/igorunderplayer/Garconete-Bot)' }
+    ])
 
-    const embed = new EmbedBuilder()
-      .setTitle(title)
-      .addFields([
-        { name: statisticsText, value: `Servers: ${this.client.guilds.cache.size}` },
-        { name: uptimeText, value: `${days}d ${hours}h ${minutes}m` },
-        { name: memoryText, value: `RSS: ${rss}mb | Heap: total: ${heapTotal}mb - used: ${heapUsed}mb` },
-        { name: '🐛 Source', value: '[GitHub](https://github.com/igorunderplayer/Garconete-Bot)' }
-      ])
-
-    interaction.reply({ embeds: [embed] })
-  }
+  interaction.reply({ embeds: [embed] })
 }

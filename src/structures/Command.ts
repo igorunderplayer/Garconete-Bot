@@ -22,6 +22,7 @@ type CommandData = ApplicationCommandData & {
 }
 
 export type CommandRun = {
+  client: GarconeteClient
   interaction: CommandInteraction,
   t: (command: string,
     prop: string,
@@ -42,8 +43,7 @@ export default abstract class Command {
   public nsfw: CommandData['nsfw']
 
   constructor (data: CommandData | SubCommand) {
-    Object.assign(this,
-      data)
+    Object.assign(this, data)
 
     if (this.testing) {
       this.description = '[Testing] ' + this.description

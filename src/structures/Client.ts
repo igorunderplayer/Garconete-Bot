@@ -64,33 +64,21 @@ export default class GarconeteClient extends Client {
 
   async loadCommands ({ ignoreCommandDirectory = [] } = {}) {
     const files = await readdir(this._options.commandsPath, { withFileTypes: true })
-    // for await (file of files) n funciona direito aqui
-    await Promise.all(files.map(async file => {
-      if (!file.isDirectory() || ignoreCommandDirectory.includes(file.name)) return
-      const commandFiles = await readdir(join(this._options.commandsPath, file.name))
-      for await (const commandFile of commandFiles) {
-        const { default: Command } = await import(join(this._options.commandsPath, file.name, commandFile))
-        const command = new Command(this)
+    await Promise.all(
+      files.map(async file => {
+        if (
+          !file.isDirectory() ||
+          ignoreCommandDirectory.includes(file.name)
+        ) return
 
-        if (command.handleSubCommands) {
-          const subCommandFiles = (await readdir(join(this._options.commandsPath, file.name, commandFile))).filter(f => f !== 'index.ts' && f !== 'index.js')
-          for await (const subCommandFile of subCommandFiles) {
-            const { default: SubCommand } = await import(join(this._options.commandsPath, file.name, commandFile, subCommandFile))
-            const subCommand = new SubCommand(this)
-            command.options.push(subCommand)
-          }
+        const commandFiles = await readdir(join(this._options.commandsPath, file.name))
+
+        for await (const commandFile of commandFiles) {
+          const { command, run } = await import(join(this._options.commandsPath, file.name, commandFile))
+
+          this.commands.set(command.name, { ...command, run })
         }
-
-        this.commands.set(command.name, command)
-      }
-    }))
-
-    this.application?.commands.set([...this.commands.filter(c => !c.testing).values()])
-    const devGuilds = process.env.DEV_GUILDS.split(' ')
-    devGuilds.forEach(guildId => {
-      const guild = this.guilds.cache.get(guildId)
-      console.log(`[Bot] Registering testing commands to guild ${guild.name}`)
-      guild.commands.set([...this.commands.filter(c => c.testing).values()])
-    })
+      })
+    )
   }
 }

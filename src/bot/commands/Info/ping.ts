@@ -1,20 +1,13 @@
-import GarconeteClient from '@structures/Client'
-import Command, { CommandRun } from '@structures/Command'
+import { CommandRun } from '@structures/Command'
+import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
 
-export default class Ping extends Command {
-  constructor (client: GarconeteClient) {
-    super({
-      name: 'ping',
-      description: 'manda a minha latencia'
-    })
+export const command = new GarconeteCommandBuilder()
+  .setName('ping')
+  .setDescription('manda minha latencia')
 
-    this.client = client
-  }
-
-  async run ({ interaction, t } : CommandRun) {
-    const reply = t(this.name, 'reply', interaction.locale, {
-      wsLatency: ~~(this.client.ws.ping)
-    })
-    interaction.reply(reply)
-  }
+export const run = ({ client, interaction, t }: CommandRun) => {
+  const reply = t(command.name, 'reply', interaction.locale, {
+    wsLatency: ~~(client.ws.ping)
+  })
+  interaction.reply(reply)
 }
