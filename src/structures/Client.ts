@@ -81,7 +81,11 @@ export default class GarconeteClient extends Client {
         for await (const commandFile of commandFiles) {
           const { command, run } = await import(join(this._options.commandsPath, file.name, commandFile))
 
+          console.log(command, run)
+
           if (!command || !run) continue
+
+          console.log(command.name)
 
           this.commands.set(command.name, {
             data: command,

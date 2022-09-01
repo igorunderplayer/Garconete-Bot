@@ -5,5 +5,6 @@ export default class GarconeteCommandBuilder extends SlashCommandBuilder {
 
   setDevOnly (devOnly: boolean) {
     this.devOnly = devOnly
+    return this
   }
 }

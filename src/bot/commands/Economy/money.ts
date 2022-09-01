@@ -1,28 +1,21 @@
-import GarconeteClient from '@structures/Client'
-import Command, { CommandRun } from '@structures/Command'
+import { CommandRun } from '@structures/Command'
 import { UsersService } from '@services/UsersService'
-import { ApplicationCommandOptionType } from 'discord.js'
 
-export default class Money extends Command {
-  constructor (client: GarconeteClient) {
-    super({
-      name: 'money',
-      description: 'shows your or other user\' money',
-      options: [{
-        type: ApplicationCommandOptionType.User,
-        name: 'user',
-        description: 'user who u want see money'
-      }]
-    })
+import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
 
-    this.client = client
-  }
+export const command = new GarconeteCommandBuilder()
+  .setName('money')
+  .setDescription('shows your or other user\' money')
+  .addUserOption(option =>
+    option
+      .setName('user')
+      .setDescription('user who u want see money')
+      .setRequired(false))
 
-  async run ({ interaction, t } : CommandRun) {
-    const usersService = new UsersService()
-    const user = interaction.options.getUser('user') ?? interaction.user
-    const { money } = await usersService.getUser(user.id)
+export const run = async ({ client, interaction, t }: CommandRun) => {
+  const usersService = new UsersService()
+  const user = interaction.options.getUser('user') ?? interaction.user
+  const { money } = await usersService.getUser(user.id)
 
-    interaction.reply(`${user.username}'s money: ${money}`)
-  }
+  interaction.reply(`${user.username}'s money: ${money}`)
 }
