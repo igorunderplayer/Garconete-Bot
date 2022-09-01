@@ -1,9 +1,9 @@
 import GarconeteClient from './Client'
 import type {
-  CommandInteraction,
   ApplicationCommandData,
   ApplicationCommandSubCommandData,
-  ApplicationCommandOption
+  ApplicationCommandOption,
+  ChatInputCommandInteraction
 } from 'discord.js'
 
 type SubCommand = ApplicationCommandSubCommandData & {
@@ -23,7 +23,7 @@ type CommandData = ApplicationCommandData & {
 
 export type CommandRun = {
   client: GarconeteClient
-  interaction: CommandInteraction,
+  interaction: ChatInputCommandInteraction,
   t: (command: string,
     prop: string,
     locale: string,

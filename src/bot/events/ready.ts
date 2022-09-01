@@ -30,6 +30,8 @@ export default class Ready extends Event<'ready'> {
       ignoreCommandDirectory: ['MessageCommands']
     })
 
+    await this.client.deployCommands()
+
     this.client.user.setStatus('online')
     this.client.user.setActivity({
       name: 'you',

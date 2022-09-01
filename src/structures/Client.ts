@@ -1,11 +1,16 @@
 import { Client, ClientOptions, Collection } from 'discord.js'
 import { request } from 'undici'
 import { readdir } from 'fs/promises'
-
-import Command from './Command'
-
 import { join } from 'path'
+
 import ClientPlugin from './ClientPlugin'
+import GarconeteCommandBuilder from './GarconeteCommandBuilder'
+import { CommandRun } from './Command'
+
+type CommandsCollection = Collection<string, {
+  data: GarconeteCommandBuilder
+  run: ({ client, interaction, t }: CommandRun) => any
+}>
 
 export interface GarconeteOptions {
   commandsPath: string
@@ -15,10 +20,10 @@ export interface GarconeteOptions {
 
 export default class GarconeteClient extends Client {
   _options: Partial<GarconeteOptions>
-  commands: Collection<string, Command>
   blacklistedIds: string[]
   request: typeof request
   plugins: Collection<string, ClientPlugin>
+  commands: CommandsCollection
 
   constructor (options: GarconeteOptions) {
     super(options.discordClientOptions)
@@ -76,9 +81,31 @@ export default class GarconeteClient extends Client {
         for await (const commandFile of commandFiles) {
           const { command, run } = await import(join(this._options.commandsPath, file.name, commandFile))
 
-          this.commands.set(command.name, { ...command, run })
+          if (!command || !run) continue
+
+          this.commands.set(command.name, {
+            data: command,
+            run
+          })
         }
       })
     )
+
+    return this
+  }
+
+  async deployCommands () {
+    const prodCommands = this.commands
+      .filter(cmd => !cmd.data.devOnly)
+      .map(cmd => cmd.data.toJSON())
+
+    const devCommands = this.commands
+      .filter(cmd => cmd.data.devOnly)
+      .map(cmd => cmd.data.toJSON())
+
+    await this.application.commands.set(prodCommands)
+    await this.application.commands.set(devCommands)
+
+    return this
   }
 }
