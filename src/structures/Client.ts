@@ -5,12 +5,8 @@ import { join } from 'path'
 
 import ClientPlugin from './ClientPlugin'
 import GarconeteCommandBuilder from './GarconeteCommandBuilder'
-import { CommandRun } from './Command'
 
-type CommandsCollection = Collection<string, {
-  data: GarconeteCommandBuilder
-  run: ({ client, interaction, t }: CommandRun) => any
-}>
+type CommandsCollection = Collection<string, GarconeteCommandBuilder>
 
 export interface GarconeteOptions {
   commandsPath: string
@@ -79,18 +75,15 @@ export default class GarconeteClient extends Client {
         const commandFiles = await readdir(join(this._options.commandsPath, file.name))
 
         for await (const commandFile of commandFiles) {
-          const { command, run } = await import(join(this._options.commandsPath, file.name, commandFile))
+          const { command } = await import(join(this._options.commandsPath, file.name, commandFile))
 
-          console.log(command, run)
+          console.log(command, command.onRun)
 
-          if (!command || !run) continue
+          if (!command) continue
 
           console.log(command.name)
 
-          this.commands.set(command.name, {
-            data: command,
-            run
-          })
+          this.commands.set(command.name, command)
         }
       })
     )
@@ -100,12 +93,12 @@ export default class GarconeteClient extends Client {
 
   async deployCommands () {
     const prodCommands = this.commands
-      .filter(cmd => !cmd.data.devOnly)
-      .map(cmd => cmd.data.toJSON())
+      .filter(cmd => !cmd.devOnly)
+      .map(cmd => cmd.toJSON())
 
     const devCommands = this.commands
-      .filter(cmd => cmd.data.devOnly)
-      .map(cmd => cmd.data.toJSON())
+      .filter(cmd => cmd.devOnly)
+      .map(cmd => cmd.toJSON())
 
     await this.application.commands.set(prodCommands)
     await this.application.commands.set(devCommands)

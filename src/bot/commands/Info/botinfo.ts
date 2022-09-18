@@ -6,11 +6,12 @@ import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
 export const command = new GarconeteCommandBuilder()
   .setName('botinfo')
   .setDescription('show some of my informations')
+  .setRunMethod(run)
   .setDescriptionLocalizations({
     'pt-BR': 'mostra minhas informações'
   })
 
-export const run = ({ client, interaction, t }: CommandRun) => {
+async function run ({ client, interaction, t }: CommandRun) {
   const title = t(command.name, 'embed.title', interaction.locale)
   const memoryText = t(command.name, 'embed.field[memory].name', interaction.locale)
   const statisticsText = t(command.name, 'embed.field[statistics].name', interaction.locale)
