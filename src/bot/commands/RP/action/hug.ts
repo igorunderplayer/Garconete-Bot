@@ -9,7 +9,7 @@ export const command = new GarconeteSubCommandBuilder()
   .setName('hug')
   .setDescription('hugs a user')
   .setRunMethod(run)
-  .addStringOption(option =>
+  .addUserOption(option =>
     option
       .setName('user')
       .setDescription('user who will receive a hug')

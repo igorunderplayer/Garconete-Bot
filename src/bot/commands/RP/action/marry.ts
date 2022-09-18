@@ -8,7 +8,7 @@ export const command = new GarconeteSubCommandBuilder()
   .setName('marry')
   .setDescription('marry with a user')
   .setRunMethod(run)
-  .addStringOption(option =>
+  .addUserOption(option =>
     option
       .setName('user')
       .setDescription('your love')
