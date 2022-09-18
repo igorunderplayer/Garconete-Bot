@@ -2,7 +2,6 @@ import { CommandRun } from '@structures/Command'
 import { ButtonStyle, ComponentType, Message } from 'discord.js'
 import { ActionRowBuilder, ButtonBuilder } from '@discordjs/builders'
 import { UsersService } from '@services/UsersService'
-import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
 import GarconeteSubCommandBuilder from '@structures/GarconeteSubCommandBuilder'
 
 export const command = new GarconeteSubCommandBuilder()

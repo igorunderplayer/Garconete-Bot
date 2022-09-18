@@ -1,5 +1,4 @@
 import { CommandRun } from '@structures/Command'
-import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
 import GarconeteSubCommandBuilder from '@structures/GarconeteSubCommandBuilder'
 import { ChannelType, Colors, EmbedBuilder } from 'discord.js'
 

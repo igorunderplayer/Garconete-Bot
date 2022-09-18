@@ -1,7 +1,6 @@
 import { CommandRun } from '@structures/Command'
-import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
 import GarconeteSubCommandBuilder from '@structures/GarconeteSubCommandBuilder'
-import { Colors, EmbedBuilder, SlashCommandSubcommandBuilder } from 'discord.js'
+import { Colors, EmbedBuilder } from 'discord.js'
 
 import NekoClient from 'nekos.life'
 const nekos = new NekoClient()
