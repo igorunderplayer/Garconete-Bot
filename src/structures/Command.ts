@@ -1,9 +1,9 @@
 import GarconeteClient from './Client'
 import type {
-  CommandInteraction,
   ApplicationCommandData,
   ApplicationCommandSubCommandData,
-  ApplicationCommandOption
+  ApplicationCommandOption,
+  ChatInputCommandInteraction
 } from 'discord.js'
 
 type SubCommand = ApplicationCommandSubCommandData & {
@@ -17,11 +17,13 @@ type CommandData = ApplicationCommandData & {
   nsfw?: boolean
 
   options?: ApplicationCommandOption | any // a
+  handleSubCommands?: boolean
   subCommands?: any
 }
 
 export type CommandRun = {
-  interaction: CommandInteraction,
+  client: GarconeteClient
+  interaction: ChatInputCommandInteraction,
   t: (command: string,
     prop: string,
     locale: string,
@@ -34,14 +36,14 @@ export default abstract class Command {
   public name: CommandData['name']
   public description: CommandData['description']
   public options: CommandData['options']
+  public handleSubCommands: CommandData['handleSubCommands']
 
   public subCommands: CommandData['subCommands']
   public testing: CommandData['testing']
   public nsfw: CommandData['nsfw']
 
   constructor (data: CommandData | SubCommand) {
-    Object.assign(this,
-      data)
+    Object.assign(this, data)
 
     if (this.testing) {
       this.description = '[Testing] ' + this.description

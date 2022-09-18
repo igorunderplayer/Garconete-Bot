@@ -1,58 +1,49 @@
-import Command, { CommandRun } from '@structures/Command'
-import GarconeteClient from '@structures/Client'
-import { MessageEmbed } from 'discord.js'
+import { CommandRun } from '@structures/Command'
+import GarconeteSubCommandBuilder from '@structures/GarconeteSubCommandBuilder'
+import { Colors, EmbedBuilder } from 'discord.js'
 
 import NekoClient from 'nekos.life'
 const nekos = new NekoClient()
 
-// import gifs from '@assets/gifs/kiss.json'
+export const command = new GarconeteSubCommandBuilder()
+  .setName('kiss')
+  .setDescription('kiss a user')
+  .setRunMethod(run)
+  .addStringOption(option =>
+    option
+      .setName('user')
+      .setDescription('user that will receive a nice kiss')
+      .setRequired(true)
+  )
 
-export default class Kiss extends Command {
-  constructor (client: GarconeteClient) {
-    super({
-      name: 'kiss',
-      description: 'kiss a user',
-      type: 'SUB_COMMAND',
-      options: [{
-        name: 'user',
-        required: true,
-        description: 'user that will receive a nice kiss',
-        type: 'USER'
-      }]
-    })
+async function run ({ client, interaction, t }: CommandRun) {
+  let replied = false
+  const user = interaction.options.getUser('user')
 
-    this.client = client
+  // "easter egg"
+  if (user.id === client.user.id) {
+    await interaction.reply(':flushed:')
+    replied = true
   }
 
-  async run ({ interaction, t } : CommandRun) {
-    let replied = false
-    const user = interaction.options.getUser('user')
+  // const gif = gifs[Math.floor(Math.random() * gifs.length)]
+  const kiss = await nekos.kiss()
 
-    // "easter egg"
-    if (user.id === this.client.user.id) {
-      await interaction.reply(':flushed:')
-      replied = true
-    }
+  const embed = new EmbedBuilder()
+    .setColor(Colors.Purple)
+    .setImage(kiss.url)
+    .setDescription(t('action', 'kiss.reply', interaction.locale, {
+      author: interaction.user,
+      user
+    }))
 
-    // const gif = gifs[Math.floor(Math.random() * gifs.length)]
-    const kiss = await nekos.kiss()
-
-    const embed = new MessageEmbed()
-      .setColor('PURPLE')
-      .setImage(kiss.url)
-      .setDescription(t('action', 'kiss.reply', interaction.locale, {
-        author: interaction.user,
-        user
-      }))
-
-    if (replied) {
-      return interaction.editReply({
-        embeds: [embed]
-      })
-    } else {
-      return interaction.reply({
-        embeds: [embed]
-      })
-    }
+  if (replied) {
+    return interaction.editReply({
+      embeds: [embed]
+    })
+  } else {
+    return interaction.reply({
+      embeds: [embed]
+    })
   }
 }

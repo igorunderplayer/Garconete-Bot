@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 import GarconeteClient from '@structures/Client'
-import { Message, MessageEmbed } from 'discord.js'
+import { Message, EmbedBuilder, Colors } from 'discord.js'
 import { UsersService } from '@services/UsersService'
+import { prisma } from 'prisma'
 import { inspect } from 'util'
 
 const devUsers = process.env.DEV_USERS.split(' ')
@@ -9,7 +11,6 @@ const evalCommand = {
   run: async (client: GarconeteClient, message: Message, args: string[]) => {
     if (!devUsers.includes(message.author.id)) return
 
-    // eslint-disable-next-line no-unused-vars
     const usersService = new UsersService()
 
     const clean = (text: any): any => {
@@ -28,16 +29,16 @@ const evalCommand = {
         inspect(await eval(args.join(' ')), { depth: 0 })
       )
 
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setTitle('Resultado:')
-        .setColor('DARK_GREEN')
+        .setColor(Colors.DarkGreen)
         .setDescription(`\`\`\`js\n${result}\`\`\``)
 
       message.reply({ embeds: [embed] })
     } catch (e) {
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setTitle('Erro')
-        .setColor('DARK_RED')
+        .setColor(Colors.DarkRed)
         .setDescription(`\`\`\`js\n${e}\`\`\``)
       message.reply({ embeds: [embed] })
     }

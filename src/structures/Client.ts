@@ -1,11 +1,12 @@
 import { Client, ClientOptions, Collection } from 'discord.js'
 import { request } from 'undici'
 import { readdir } from 'fs/promises'
-
-import Command from './Command'
-
 import { join } from 'path'
+
 import ClientPlugin from './ClientPlugin'
+import GarconeteCommandBuilder from './GarconeteCommandBuilder'
+
+type CommandsCollection = Collection<string, GarconeteCommandBuilder>
 
 export interface GarconeteOptions {
   commandsPath: string
@@ -15,10 +16,10 @@ export interface GarconeteOptions {
 
 export default class GarconeteClient extends Client {
   _options: Partial<GarconeteOptions>
-  commands: Collection<string, Command>
   blacklistedIds: string[]
   request: typeof request
   plugins: Collection<string, ClientPlugin>
+  commands: CommandsCollection
 
   constructor (options: GarconeteOptions) {
     super(options.discordClientOptions)
@@ -64,33 +65,44 @@ export default class GarconeteClient extends Client {
 
   async loadCommands ({ ignoreCommandDirectory = [] } = {}) {
     const files = await readdir(this._options.commandsPath, { withFileTypes: true })
-    // for await (file of files) n funciona direito aqui
-    await Promise.all(files.map(async file => {
-      if (!file.isDirectory() || ignoreCommandDirectory.includes(file.name)) return
-      const commandFiles = await readdir(join(this._options.commandsPath, file.name))
-      for await (const commandFile of commandFiles) {
-        const { default: Command } = await import(join(this._options.commandsPath, file.name, commandFile))
-        const command = new Command(this)
+    await Promise.all(
+      files.map(async file => {
+        if (
+          !file.isDirectory() ||
+          ignoreCommandDirectory.includes(file.name)
+        ) return
 
-        if (command.handleSubCommands) {
-          const subCommandFiles = (await readdir(join(this._options.commandsPath, file.name, commandFile))).filter(f => f !== 'index.ts' && f !== 'index.js')
-          for await (const subCommandFile of subCommandFiles) {
-            const { default: SubCommand } = await import(join(this._options.commandsPath, file.name, commandFile, subCommandFile))
-            const subCommand = new SubCommand(this)
-            command.options.push(subCommand)
-          }
+        const commandFiles = await readdir(join(this._options.commandsPath, file.name))
+
+        for await (const commandFile of commandFiles) {
+          const { command } = await import(join(this._options.commandsPath, file.name, commandFile))
+
+          console.log(command, command.onRun)
+
+          if (!command) continue
+
+          console.log(command.name)
+
+          this.commands.set(command.name, command)
         }
+      })
+    )
 
-        this.commands.set(command.name, command)
-      }
-    }))
+    return this
+  }
 
-    this.application?.commands.set([...this.commands.filter(c => !c.testing).values()])
-    const devGuilds = process.env.DEV_GUILDS.split(' ')
-    devGuilds.forEach(guildId => {
-      const guild = this.guilds.cache.get(guildId)
-      console.log(`[Bot] Registering testing commands to guild ${guild.name}`)
-      guild.commands.set([...this.commands.filter(c => c.testing).values()])
-    })
+  async deployCommands () {
+    const prodCommands = this.commands
+      .filter(cmd => !cmd.devOnly)
+      .map(cmd => cmd.toJSON())
+
+    const devCommands = this.commands
+      .filter(cmd => cmd.devOnly)
+      .map(cmd => cmd.toJSON())
+
+    await this.application.commands.set(prodCommands)
+    await this.application.commands.set(devCommands)
+
+    return this
   }
 }

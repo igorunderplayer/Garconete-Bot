@@ -1,39 +1,40 @@
-import Command, { CommandRun } from '@structures/Command'
-import GarconeteClient from '@structures/Client'
+import { CommandRun } from '@structures/Command'
 
-import Hug from './hug'
-import Kiss from './kiss'
-import Marry from './marry'
+import * as Hug from './hug'
+import * as Kiss from './kiss'
+import * as Marry from './marry'
 
-export default class Actions extends Command {
-  constructor (client: GarconeteClient) {
-    super({
-      name: 'action',
-      description: 'ações',
-      handleSubCommands: true,
-      testing: true,
-      options: []
-    })
+import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
 
-    this.client = client
-  }
+export const command = new GarconeteCommandBuilder()
+  .setName('action')
+  .setDescription('some actions to do')
+  .setRunMethod(run)
+  .addSubcommand(Hug.command)
+  .addSubcommand(Kiss.command)
+  .addSubcommand(Marry.command)
 
-  async run ({ interaction, t } : CommandRun) {
-    const subCommand = interaction.options.getSubcommand()
+async function run ({ client, interaction, t }: CommandRun) {
+  const subCommand = interaction.options.getSubcommand()
 
-    switch (subCommand) {
-      case 'hug': {
-        await new Hug(this.client).run({ interaction, t })
-        break
-      }
-      case 'kiss': {
-        await new Kiss(this.client).run({ interaction, t })
-        break
-      }
-      case 'marry': {
-        await new Marry(this.client).run({ interaction, t })
-        break
-      }
+  switch (subCommand) {
+    case 'hug': {
+      await Hug.command.onRun({ client, interaction, t })
+      break
+    }
+
+    case 'kiss': {
+      await Kiss.command.onRun({ client, interaction, t })
+      break
+    }
+
+    case 'marry': {
+      await Marry.command.onRun({ client, interaction, t })
+      break
+    }
+
+    default: {
+      break
     }
   }
 }

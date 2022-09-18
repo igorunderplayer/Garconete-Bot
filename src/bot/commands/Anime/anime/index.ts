@@ -1,35 +1,32 @@
-import GarconeteClient from '@structures/Client'
-import Command, { CommandRun } from '@structures/Command'
+import { CommandRun } from '@structures/Command'
+import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
 
-import OwOify from './owoify'
-import Wallpaper from './wallpaper'
+import * as OwO from './owoify'
+import * as Wallpaper from './wallpaper'
 
-export default class Anime extends Command {
-  constructor (client: GarconeteClient) {
-    super({
-      name: 'anime',
-      description: 'imagens de anime!!',
-      handleSubCommands: true,
-      options: [],
-      testing: true
-    })
+export const command = new GarconeteCommandBuilder()
+  .setName('anime')
+  .setDescription('some anime commands')
+  .setRunMethod(run)
+  .addSubcommand(Wallpaper.command)
+  .addSubcommand(OwO.command)
 
-    this.client = client
-  }
+async function run ({ client, interaction, t }: CommandRun) {
+  const subCommand = interaction.options.getSubcommand()
 
-  async run ({ interaction, t }: CommandRun) {
-    switch (interaction.options.getSubcommand()) {
-      case 'wallpaper': {
-        await new Wallpaper(this.client).run({ interaction, t })
-        break
-      }
-      case 'owoify': {
-        await new OwOify(this.client).run({ interaction, t })
-        break
-      }
-      default: {
-        break
-      }
+  switch (subCommand) {
+    case 'wallpaper': {
+      await Wallpaper.command.onRun({ client, interaction, t })
+      break
+    }
+
+    case 'owoify': {
+      await OwO.command.onRun({ client, interaction, t })
+      break
+    }
+
+    default: {
+      break
     }
   }
 }

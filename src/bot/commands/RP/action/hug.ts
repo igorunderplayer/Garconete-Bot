@@ -1,42 +1,35 @@
-import GarconeteClient from '@structures/Client'
-import Command, { CommandRun } from '@structures/Command'
+import { CommandRun } from '@structures/Command'
+import GarconeteSubCommandBuilder from '@structures/GarconeteSubCommandBuilder'
 
-import { MessageEmbed } from 'discord.js'
+import { Colors, EmbedBuilder } from 'discord.js'
 import NekoClient from 'nekos.life'
 const nekos = new NekoClient()
 
-export default class Hug extends Command {
-  constructor (client: GarconeteClient) {
-    super({
-      name: 'hug',
-      description: 'hugs a user',
-      type: 'SUB_COMMAND',
-      options: [{
-        name: 'user',
-        description: 'user to get a hug',
-        required: true,
-        type: 'USER'
-      }]
-    })
+export const command = new GarconeteSubCommandBuilder()
+  .setName('hug')
+  .setDescription('hugs a user')
+  .setRunMethod(run)
+  .addStringOption(option =>
+    option
+      .setName('user')
+      .setDescription('user who will receive a hug')
+      .setRequired(true)
+  )
 
-    this.client = client
-  }
+async function run ({ client, interaction, t }: CommandRun) {
+  const user = interaction.options.getUser('user')
 
-  async run ({ interaction, t } : CommandRun) {
-    const user = interaction.options.getUser('user')
+  const hug = await nekos.hug()
 
-    const hug = await nekos.hug()
+  const embed = new EmbedBuilder()
+    .setColor(Colors.Yellow)
+    .setImage(hug.url)
+    .setDescription(t('action', 'hug.reply', interaction.locale, {
+      author: interaction.user,
+      user
+    }))
 
-    const embed = new MessageEmbed()
-      .setColor('YELLOW')
-      .setImage(hug.url)
-      .setDescription(t('action', 'hug.reply', interaction.locale, {
-        author: interaction.user,
-        user
-      }))
-
-    interaction.reply({
-      embeds: [embed]
-    })
-  }
+  interaction.reply({
+    embeds: [embed]
+  })
 }

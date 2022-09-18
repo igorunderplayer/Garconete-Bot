@@ -1,44 +1,38 @@
-import GarconeteClient from '@structures/Client'
-import Command, { CommandRun } from '@structures/Command'
+import { CommandRun } from '@structures/Command'
 import { UsersService } from '@services/UsersService'
 import convertMilliseconds from '@utils/convertMilliseconds'
+import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
 
-export default class Daily extends Command {
-  constructor (client: GarconeteClient) {
-    super({
-      name: 'daily',
-      description: 'Get your daily reward!'
-    })
+export const command = new GarconeteCommandBuilder()
+  .setName('daily')
+  .setDescription('get your daily reward')
+  .setRunMethod(run)
 
-    this.client = client
-  }
+async function run ({ client, interaction, t }: CommandRun) {
+  await interaction.deferReply()
 
-  async run ({ interaction, t } : CommandRun) {
-    await interaction.deferReply()
+  const usersService = new UsersService()
 
-    const usersService = new UsersService()
+  const DAY_IN_MS = 1000 * 60 * 60 * 24
 
-    const DAY_IN_MS = 1000 * 60 * 60 * 24
+  const user = await usersService.getUser(interaction.user.id)
 
-    const user = await usersService.getUser(interaction.user.id)
-
-    if ((Date.now() - user.dailyRewardAt.getTime()) < DAY_IN_MS) {
-      const { hours, minutes, seconds } = convertMilliseconds(DAY_IN_MS - (Date.now() - user.dailyRewardAt.getTime()))
-      return await interaction.editReply(t(this.name, 'already_claimed', interaction.locale, {
-        remaining: `${hours}h ${minutes}m ${seconds}s`
-      }))
-    }
-
-    const reward = 100
-
-    const updatedUser = await usersService.updateUser(interaction.user.id, {
-      dailyRewardAt: new Date(),
-      money: user.money + reward
-    })
-
-    return await interaction.editReply(t(this.name, 'success', interaction.locale, {
-      money: updatedUser.money,
-      reward
+  if ((Date.now() - user.dailyRewardAt.getTime()) < DAY_IN_MS) {
+    const { hours, minutes, seconds } = convertMilliseconds(DAY_IN_MS - (Date.now() - user.dailyRewardAt.getTime()))
+    return await interaction.editReply(t(command.name, 'already_claimed', interaction.locale, {
+      remaining: `${hours}h ${minutes}m ${seconds}s`
     }))
   }
+
+  const reward = 100
+
+  const updatedUser = await usersService.updateUser(interaction.user.id, {
+    dailyRewardAt: new Date(),
+    money: user.money + reward
+  })
+
+  return await interaction.editReply(t(command.name, 'success', interaction.locale, {
+    money: updatedUser.money,
+    reward
+  }))
 }

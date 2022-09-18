@@ -1,6 +1,6 @@
 import Event from '@structures/Event'
 import GarconeteClient from '@structures/Client'
-import { ClientEvents } from 'discord.js'
+import { ActivityType, ClientEvents, OAuth2Scopes, PermissionFlagsBits } from 'discord.js'
 import { prisma } from '../../prisma'
 
 export default class Ready extends Event<'ready'> {
@@ -30,10 +30,25 @@ export default class Ready extends Event<'ready'> {
       ignoreCommandDirectory: ['MessageCommands']
     })
 
-    this.client.user.setStatus('idle')
+    await this.client.deployCommands()
+
+    this.client.user.setStatus('online')
     this.client.user.setActivity({
-      name: 'sexo',
-      type: 'WATCHING'
+      name: 'you',
+      type: ActivityType.Watching
     })
+
+    const invite = this.client.generateInvite({
+      scopes: [
+        OAuth2Scopes.ApplicationsCommands,
+        OAuth2Scopes.Bot
+      ],
+      permissions: [
+        PermissionFlagsBits.Administrator
+      ]
+    })
+
+    console.log(`Bot | ${this.client.user.tag} ready!`)
+    console.log(`Bot | Invite-me: ${invite}`)
   }
 }
