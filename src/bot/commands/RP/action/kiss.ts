@@ -1,12 +1,15 @@
 import { CommandRun } from '@structures/Command'
+import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
+import GarconeteSubCommandBuilder from '@structures/GarconeteSubCommandBuilder'
 import { Colors, EmbedBuilder, SlashCommandSubcommandBuilder } from 'discord.js'
 
 import NekoClient from 'nekos.life'
 const nekos = new NekoClient()
 
-export const command = new SlashCommandSubcommandBuilder()
+export const command = new GarconeteSubCommandBuilder()
   .setName('kiss')
   .setDescription('kiss a user')
+  .setRunMethod(run)
   .addStringOption(option =>
     option
       .setName('user')
@@ -14,7 +17,7 @@ export const command = new SlashCommandSubcommandBuilder()
       .setRequired(true)
   )
 
-export const run = async ({ client, interaction, t }: CommandRun) => {
+async function run ({ client, interaction, t }: CommandRun) {
   let replied = false
   const user = interaction.options.getUser('user')
 

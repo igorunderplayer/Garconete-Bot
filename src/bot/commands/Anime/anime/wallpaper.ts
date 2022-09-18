@@ -1,14 +1,17 @@
 import { CommandRun } from '@structures/Command'
-import { ChannelType, Colors, EmbedBuilder, SlashCommandSubcommandBuilder } from 'discord.js'
+import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
+import GarconeteSubCommandBuilder from '@structures/GarconeteSubCommandBuilder'
+import { ChannelType, Colors, EmbedBuilder } from 'discord.js'
 
 import NekoClient from 'nekos.life'
 const nekos = new NekoClient()
 
-export const command = new SlashCommandSubcommandBuilder()
+export const command = new GarconeteSubCommandBuilder()
   .setName('wallpaper')
   .setDescription('anime wallpapers for you!!')
+  .setRunMethod(run)
 
-export const run = async ({ client, interaction, t }: CommandRun) => {
+async function run ({ client, interaction, t }: CommandRun) {
   if (interaction.channel.type !== ChannelType.GuildText || !interaction.channel.nsfw) {
     return await interaction.reply({
       content: '🔞 | Command disabled for non-nsfw channels',

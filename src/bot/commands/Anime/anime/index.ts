@@ -7,20 +7,21 @@ import * as Wallpaper from './wallpaper'
 export const command = new GarconeteCommandBuilder()
   .setName('anime')
   .setDescription('some anime commands')
+  .setRunMethod(run)
   .addSubcommand(Wallpaper.command)
   .addSubcommand(OwO.command)
 
-export const run = async ({ client, interaction, t }: CommandRun) => {
+async function run ({ client, interaction, t }: CommandRun) {
   const subCommand = interaction.options.getSubcommand()
 
   switch (subCommand) {
     case 'wallpaper': {
-      await Wallpaper.run({ client, interaction, t })
+      await Wallpaper.command.onRun({ client, interaction, t })
       break
     }
 
     case 'owoify': {
-      await OwO.run({ client, interaction, t })
+      await OwO.command.onRun({ client, interaction, t })
       break
     }
 

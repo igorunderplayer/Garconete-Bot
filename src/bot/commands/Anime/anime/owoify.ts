@@ -1,19 +1,20 @@
 import { CommandRun } from '@structures/Command'
-import { SlashCommandSubcommandBuilder } from 'discord.js'
+import GarconeteSubCommandBuilder from '@structures/GarconeteSubCommandBuilder'
 
 import NekoClient from 'nekos.life'
 const nekos = new NekoClient()
 
-export const command = new SlashCommandSubcommandBuilder()
+export const command = new GarconeteSubCommandBuilder()
   .setName('owoify')
   .setDescription('owo?')
+  .setRunMethod(run)
   .addStringOption(option =>
     option.setName('input')
       .setDescription('text to be owoified')
       .setRequired(true)
   )
 
-export const run = async ({ client, interaction, t }: CommandRun) => {
+async function run ({ client, interaction, t }: CommandRun) {
   const text = interaction.options.get('input', true).value as string
   const { owo } = await nekos.OwOify({
     text

@@ -6,13 +6,15 @@ import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
 export const command = new GarconeteCommandBuilder()
   .setName('money')
   .setDescription('shows your or other user\' money')
+  .setRunMethod(run)
   .addUserOption(option =>
     option
       .setName('user')
       .setDescription('user who u want see money')
-      .setRequired(false))
+      .setRequired(false)
+  )
 
-export const run = async ({ client, interaction, t }: CommandRun) => {
+async function run ({ client, interaction, t }: CommandRun) {
   const usersService = new UsersService()
   const user = interaction.options.getUser('user') ?? interaction.user
   const { money } = await usersService.getUser(user.id)

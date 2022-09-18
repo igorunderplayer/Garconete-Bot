@@ -1,11 +1,14 @@
 import { CommandRun } from '@structures/Command'
-import { ButtonStyle, ComponentType, Message, SlashCommandSubcommandBuilder } from 'discord.js'
+import { ButtonStyle, ComponentType, Message } from 'discord.js'
 import { ActionRowBuilder, ButtonBuilder } from '@discordjs/builders'
 import { UsersService } from '@services/UsersService'
+import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
+import GarconeteSubCommandBuilder from '@structures/GarconeteSubCommandBuilder'
 
-export const command = new SlashCommandSubcommandBuilder()
+export const command = new GarconeteSubCommandBuilder()
   .setName('marry')
   .setDescription('marry with a user')
+  .setRunMethod(run)
   .addStringOption(option =>
     option
       .setName('user')
@@ -13,7 +16,7 @@ export const command = new SlashCommandSubcommandBuilder()
       .setRequired(true)
   )
 
-export const run = async ({ client, interaction, t }: CommandRun) => {
+async function run ({ client, interaction, t }: CommandRun) {
   await interaction.deferReply()
   const user = interaction.options.getUser('user')
   const usersService = new UsersService()

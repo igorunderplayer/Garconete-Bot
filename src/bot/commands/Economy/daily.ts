@@ -6,8 +6,9 @@ import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
 export const command = new GarconeteCommandBuilder()
   .setName('daily')
   .setDescription('get your daily reward')
+  .setRunMethod(run)
 
-export const run = async ({ client, interaction, t }: CommandRun) => {
+async function run ({ client, interaction, t }: CommandRun) {
   await interaction.deferReply()
 
   const usersService = new UsersService()
