@@ -21,6 +21,8 @@ export default class GarconeteClient extends Client {
   plugins: Collection<string, ClientPlugin>
   commands: CommandsCollection
 
+  private DEV_GUILDS_ID = process.env.DEV_GUILDS.split(' ')
+
   constructor (options: GarconeteOptions) {
     super(options.discordClientOptions)
 
@@ -77,11 +79,7 @@ export default class GarconeteClient extends Client {
         for await (const commandFile of commandFiles) {
           const { command } = await import(join(this._options.commandsPath, file.name, commandFile))
 
-          console.log(command, command.onRun)
-
           if (!command) continue
-
-          console.log(command.name)
 
           this.commands.set(command.name, command)
         }
@@ -100,8 +98,14 @@ export default class GarconeteClient extends Client {
       .filter(cmd => cmd.devOnly)
       .map(cmd => cmd.toJSON())
 
+    console.log('Bot | Registering dev commands')
+    for await (const devGuildId of this.DEV_GUILDS_ID) {
+      const guild = this.guilds.cache.get(devGuildId)
+      await guild.commands.set(devCommands)
+    }
+
+    console.log('Bot | Registering prod commands')
     await this.application.commands.set(prodCommands)
-    await this.application.commands.set(devCommands)
 
     return this
   }
