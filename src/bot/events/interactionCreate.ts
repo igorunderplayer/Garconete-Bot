@@ -14,7 +14,7 @@ export default class InteractionCreate extends Event<'interactionCreate'> {
 
   async handle ([interaction]: ClientEvents['interactionCreate']) {
     if (interaction.type === InteractionType.ApplicationCommand) {
-      if (this.client.blacklistedIds.indexOf(interaction.user.id) !== -1) {
+      if (this.client.blacklistedIds.has(interaction.user.id)) {
         return interaction.reply({
           content: 'you are blacklisted',
           ephemeral: true

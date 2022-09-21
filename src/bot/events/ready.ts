@@ -15,7 +15,7 @@ export default class Ready extends Event<'ready'> {
     console.log(`[Bot] Ready! | Logged as ${this.client.user.tag} (${this.client.user.id})`)
     console.log('[Bot] Loading commands...')
 
-    const blacklistUserIds = await prisma.user.findMany({
+    const blacklistUser = await prisma.user.findMany({
       where: {
         blacklisted: true
       },
@@ -24,7 +24,9 @@ export default class Ready extends Event<'ready'> {
       }
     })
 
-    this.client.blacklistedIds = blacklistUserIds.map(user => user.id)
+    const blacklistedUsersIds = blacklistUser.map(user => user.id)
+
+    this.client.blacklistedIds = new Set(blacklistedUsersIds)
 
     await this.client.loadCommands({
       ignoreCommandDirectory: ['MessageCommands']

@@ -16,7 +16,7 @@ export interface GarconeteOptions {
 
 export default class GarconeteClient extends Client {
   _options: Partial<GarconeteOptions>
-  blacklistedIds: string[]
+  blacklistedIds: Set<string>
   request: typeof request
   plugins: Collection<string, ClientPlugin>
   commands: CommandsCollection
@@ -26,7 +26,7 @@ export default class GarconeteClient extends Client {
   constructor (options: GarconeteOptions) {
     super(options.discordClientOptions)
 
-    this.blacklistedIds = []
+    this.blacklistedIds = new Set()
     this.commands = new Collection()
     this.plugins = new Collection()
     this.request = request

@@ -13,18 +13,16 @@ const blacklist = {
 
     const user = await usersService.getUser(userId)
 
-    await usersService.updateUser(user.id, {
+    const updatedUser = await usersService.updateUser(user.id, {
       blacklisted: !user.blacklisted
     })
 
-    const index = client.blacklistedIds.indexOf(user.id)
-
-    if (index > -1 && user.blacklisted) {
-      client.blacklistedIds.splice(index, 1)
+    if (updatedUser.blacklisted) {
+      client.blacklistedIds.delete(userId)
     }
 
-    if (index === -1 && !user.blacklisted) {
-      client.blacklistedIds.push(user.id)
+    if (!user.blacklisted) {
+      client.blacklistedIds.add(userId)
     }
 
     message.reply(`User with id ${user.id} was ${user.blacklisted ? 'removed' : 'added'} to the blacklist`)
