@@ -1,8 +1,8 @@
-import ClientPlugin from '@structures/ClientPlugin'
-import GarconeteClient from '@structures/Client'
+import ClientPlugin from '@structures/ClientPlugin.js'
+import GarconeteClient from '@structures/Client.js'
 import { Collection, Message, PartialMessage } from 'discord.js'
 
-import { prisma } from '../../prisma'
+import { prisma } from '../../prisma.js'
 
 interface ReplyData {
   trigger: string

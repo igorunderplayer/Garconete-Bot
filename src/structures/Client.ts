@@ -1,10 +1,10 @@
 import { Client, ClientOptions, Collection } from 'discord.js'
 import { request } from 'undici'
 import { readdir } from 'fs/promises'
-import { join } from 'path'
+import { dirname, join } from 'path'
 
-import ClientPlugin from './ClientPlugin'
-import GarconeteCommandBuilder from './GarconeteCommandBuilder'
+import ClientPlugin from './ClientPlugin.js'
+import GarconeteCommandBuilder from './GarconeteCommandBuilder.js'
 
 type CommandsCollection = Collection<string, GarconeteCommandBuilder>
 
@@ -59,7 +59,8 @@ export default class GarconeteClient extends Client {
   async loadEvents () {
     const files = await readdir(this._options.eventsPath)
     for await (const file of files) {
-      const { default: Event } = await import(join(this._options.eventsPath, file))
+      console.log(dirname(file))
+      const { default: Event } = await import(join('..', '..', this._options.eventsPath, file))
       const event = new Event(this)
       this.on(event.trigger, (...data) => event.handle(data))
     }

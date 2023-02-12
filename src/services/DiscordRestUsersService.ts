@@ -2,7 +2,7 @@
 import type {
   APIGuild,
   APIUser
-} from 'discord-api-types'
+} from 'discord.js'
 
 import { request } from 'undici'
 

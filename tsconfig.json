@@ -1,31 +1,42 @@
 {
   "compilerOptions": {
-
     "resolveJsonModule": true,
-
+    "moduleResolution": "nodenext",
     "target": "es2020",
-    "module": "commonjs",
-    "lib": ["es6"],
+    "module": "es2020",
+    "lib": [
+      "es6"
+    ],
     "allowJs": true,
     "outDir": "./dist",
     "rootDir": "./src",
     "removeComments": true,
-
     "typeRoots": [
       "./node_modules/@types",
       "./src/typings"
     ],
-    "esModuleInterop": true,
-
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-
     "baseUrl": "./src",
     "paths": {
-      "@assets/*": ["./assets/*"],
-      "@services/*": ["./services/*"],
-      "@structures/*": ["./structures/*"],
-      "@utils/*": ["./utils/*"]
+      "@assets/*": [
+        "./assets/*"
+      ],
+      "@bot/*": [
+        "./bot/*"
+      ],
+      "@server/*": [
+        "./server/*"
+      ],
+      "@services/*": [
+        "./services/*"
+      ],
+      "@structures/*": [
+        "./structures/*"
+      ],
+      "@utils/*": [
+        "./utils/*"
+      ]
     }
   }
 }

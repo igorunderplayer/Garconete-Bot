@@ -1,4 +1,4 @@
-import type GarconeteClient from '@structures/Client'
+import type GarconeteClient from '@structures/Client.js'
 import type { ChatInputCommandInteraction } from 'discord.js'
 
 export declare type CommandRunProps = {

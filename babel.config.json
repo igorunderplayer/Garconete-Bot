@@ -1,0 +1,22 @@
+{
+  "presets": [
+    "@babel/preset-typescript",
+    "@babel/preset-modules"
+  ],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "cwd": "./dist",
+        "alias": {
+          "@assets": "./assets",
+          "@bot": "./bot",
+          "@server": "./server",
+          "@services": "./services",
+          "@structures": "./structures",
+          "@utils": "./utils"
+        }
+      }
+    ]
+  ]
+}

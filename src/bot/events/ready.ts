@@ -1,7 +1,7 @@
-import Event from '@structures/Event'
-import GarconeteClient from '@structures/Client'
+import Event from '@structures/Event.js'
+import GarconeteClient from '@structures/Client.js'
 import { ActivityType, ClientEvents, OAuth2Scopes, PermissionFlagsBits } from 'discord.js'
-import { prisma } from '../../prisma'
+import { prisma } from '../../prisma.js'
 
 export default class Ready extends Event<'ready'> {
   trigger: keyof ClientEvents = 'ready'

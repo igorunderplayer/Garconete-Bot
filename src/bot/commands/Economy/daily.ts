@@ -1,7 +1,7 @@
-import { CommandRun } from '@structures/Command'
-import { UsersService } from '@services/UsersService'
-import convertMilliseconds from '@utils/convertMilliseconds'
-import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
+import { CommandRun } from '@structures/Command.js'
+import { UsersService } from '@services/UsersService.js'
+import convertMilliseconds from '@utils/convertMilliseconds.js'
+import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder.js'
 
 export const command = new GarconeteCommandBuilder()
   .setName('daily')

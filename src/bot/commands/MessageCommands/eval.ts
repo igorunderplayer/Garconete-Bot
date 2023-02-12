@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import GarconeteClient from '@structures/Client'
+import GarconeteClient from '@structures/Client.js'
 import { Message, EmbedBuilder, Colors } from 'discord.js'
-import { UsersService } from '@services/UsersService'
+import { UsersService } from '@services/UsersService.js'
 import { prisma } from 'prisma'
 import { inspect } from 'util'
 

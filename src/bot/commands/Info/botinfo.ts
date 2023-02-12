@@ -1,7 +1,7 @@
 import { EmbedBuilder } from 'discord.js'
-import { CommandRun } from '@structures/Command'
-import convertMilliseconds from '@utils/convertMilliseconds'
-import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
+import { CommandRun } from '@structures/Command.js'
+import convertMilliseconds from '@utils/convertMilliseconds.js'
+import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder.js'
 
 export const command = new GarconeteCommandBuilder()
   .setName('botinfo')

@@ -1,4 +1,4 @@
-import GarconeteClient from '@structures/Client'
+import GarconeteClient from '@structures/Client.js'
 import { Message, PartialMessage } from 'discord.js'
 
 export interface PluginOptions {

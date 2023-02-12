@@ -1,6 +1,6 @@
-import auth from './auth'
-import guild from './guild'
-import users from './users'
+import auth from './auth.js'
+import guild from './guild.js'
+import users from './users.js'
 
 export {
   auth,

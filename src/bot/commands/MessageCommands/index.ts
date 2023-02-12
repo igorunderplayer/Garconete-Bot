@@ -1,9 +1,11 @@
-import { allusers } from './allusers'
-import { evalCommand } from './eval'
-import { blacklist } from './blacklist'
+import { allusers } from './allusers.js'
+import { evalCommand } from './eval.js'
+import { blacklist } from './blacklist.js'
+import { reload } from './reloadcommand.js'
 
 export {
   allusers,
   evalCommand as eval,
-  blacklist
+  blacklist,
+  reload
 }

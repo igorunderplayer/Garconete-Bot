@@ -1,4 +1,4 @@
-import { CommandRun } from '@types'
+import { CommandRun } from 'types/index.js'
 import { SlashCommandSubcommandBuilder } from 'discord.js'
 
 export default class GarconeteSubCommandBuilder extends SlashCommandSubcommandBuilder {

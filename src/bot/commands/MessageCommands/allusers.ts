@@ -1,7 +1,7 @@
-import GarconeteClient from '@structures/Client'
+import GarconeteClient from '@structures/Client.js'
 import { Message } from 'discord.js'
 
-import { prisma } from '../../../prisma'
+import { prisma } from '../../../prisma.js'
 import { inspect } from 'util'
 
 const devUsers = process.env.DEV_USERS.split(' ')

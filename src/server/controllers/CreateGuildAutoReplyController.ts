@@ -2,12 +2,12 @@ import { Request, Response } from 'express'
 
 import jwt from 'jsonwebtoken'
 
-import AutoReply from 'bot/plugins/AutoReply'
-import { client } from 'bot'
-import { DiscordRestUsersService } from '@services/DiscordRestUsersService'
-import { UsersService } from '@services/UsersService'
+import AutoReply from '@bot/plugins/AutoReply.js'
+import bot from '@bot/index.js'
+import { DiscordRestUsersService } from '@services/DiscordRestUsersService.js'
+import { UsersService } from '@services/UsersService.js'
 
-import { Permissions } from 'discord.js'
+import { PermissionsBitField } from 'discord.js'
 
 const SECRET = process.env.JWT_SECRET
 
@@ -32,7 +32,7 @@ class CreateGuildAutoReplyController {
       return
     }
 
-    const plugin = client.plugins.get('autoReply') as AutoReply
+    const plugin = bot.plugins.get('autoReply') as AutoReply
 
     const { reply } = req.body
     const { guildId } = req.params
@@ -41,7 +41,7 @@ class CreateGuildAutoReplyController {
     const guild = await discordUsers.getUserGuild(user.accessToken, guildId)
     const permissions = BigInt(guild.permissions)
 
-    const hasPermission = (permissions & Permissions.FLAGS.MANAGE_GUILD) === (Permissions.FLAGS.MANAGE_GUILD)
+    const hasPermission = (permissions & PermissionsBitField.Flags.ManageGuild) === (PermissionsBitField.Flags.ManageGuild)
 
     if (!hasPermission) {
       res.status(401).json({ message: 'Unauthorized' })

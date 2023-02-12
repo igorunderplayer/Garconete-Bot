@@ -3,39 +3,45 @@
 import express from 'express'
 import cors from 'cors'
 
-import * as routes from './routes'
+import * as routes from './routes/index.js'
 
-import { client } from '../bot'
+import bot from '@bot/index.js'
 
-const app = express()
+export default class ServerStartup {
+  app: express.Application
 
-const port = process.env.PORT ?? 8080
+  async run () {
+    this.app = express()
 
-app.use(cors())
-app.use(express.json())
+    const port = process.env.PORT ?? 8080
 
-app.use('/auth', routes.auth)
-app.use('/guilds', routes.guild)
-app.use('/users', routes.users)
+    this.app.use(cors())
+    this.app.use(express.json())
 
-app.get('/commands', (req, res) => {
-  const commands = client.commands.filter(cmd => !cmd.testing).map(command => {
-    return {
-      name: command.name,
-      description: command.description,
-      options: command.options ?? []
-    }
-  })
+    this.app.use('/auth', routes.auth)
+    this.app.use('/guilds', routes.guild)
+    this.app.use('/users', routes.users)
 
-  res.json({ data: commands })
-})
+    this.app.get('/commands', (req, res) => {
+      const commands = bot.commands.filter(cmd => !cmd.devOnly).map(command => {
+        return {
+          name: command.name,
+          description: command.description,
+          options: command.options ?? []
+        }
+      })
 
-app.use((req, res, next) => {
-  res.status(404).send('Route not found!')
-})
+      res.json({ data: commands })
+    })
 
-app.listen(port, () => {
-  console.log(`[Server] Listening on port ${port}`)
-})
+    this.app.use((req, res, next) => {
+      res.status(404).send('Route not found!')
+    })
 
-export { app }
+    this.app.listen(port, () => {
+      console.log(`[Server] Listening on port ${port}`)
+    })
+
+    return this.app
+  }
+}

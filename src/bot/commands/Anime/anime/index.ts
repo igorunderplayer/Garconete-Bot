@@ -1,8 +1,8 @@
-import { CommandRun } from '@structures/Command'
-import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
+import { CommandRun } from '@structures/Command.js'
+import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder.js'
 
-import * as OwO from './owoify'
-import * as Wallpaper from './wallpaper'
+import * as OwO from './owoify.js'
+import * as Wallpaper from './wallpaper.js'
 
 export const command = new GarconeteCommandBuilder()
   .setName('anime')

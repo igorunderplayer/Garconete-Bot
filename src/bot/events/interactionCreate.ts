@@ -1,8 +1,8 @@
 import { ClientEvents, EmbedBuilder, TextChannel, Colors, InteractionType } from 'discord.js'
-import GarconeteClient from '@structures/Client'
-import Event from '@structures/Event'
+import GarconeteClient from '@structures/Client.js'
+import Event from '@structures/Event.js'
 
-import translate from '@utils/translate'
+import translate from '@utils/translate.js'
 
 export default class InteractionCreate extends Event<'interactionCreate'> {
   trigger: keyof ClientEvents = 'interactionCreate'

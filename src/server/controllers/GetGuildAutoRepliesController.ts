@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
-import { DiscordRestUsersService } from '@services/DiscordRestUsersService'
-import { UsersService } from '@services/UsersService'
+import { DiscordRestUsersService } from '@services/DiscordRestUsersService.js'
+import { UsersService } from '@services/UsersService.js'
 
-import { Permissions } from 'discord.js'
-import { prisma } from '../../prisma'
+import { PermissionsBitField } from 'discord.js'
+import { prisma } from '../../prisma.js'
 
 const SECRET = process.env.JWT_SECRET
 
@@ -36,7 +36,7 @@ class GetGuildAutoRepliesController {
     const guild = await discordUsers.getUserGuild(user.accessToken, guildId)
     const permissions = BigInt(guild.permissions)
 
-    const hasPermission = (permissions & Permissions.FLAGS.MANAGE_GUILD) === (Permissions.FLAGS.MANAGE_GUILD)
+    const hasPermission = (permissions & PermissionsBitField.Flags.ManageGuild) === (PermissionsBitField.Flags.ManageGuild)
 
     if (!hasPermission) {
       res.status(401).json({ message: 'Unauthorized' })

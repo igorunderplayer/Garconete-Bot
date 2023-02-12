@@ -1,4 +1,4 @@
-import GarconeteClient from './Client'
+import GarconeteClient from './Client.js'
 import type {
   ApplicationCommandData,
   ApplicationCommandSubCommandData,

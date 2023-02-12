@@ -1,5 +1,5 @@
 import { User } from '@prisma/client'
-import { prisma } from '../prisma'
+import { prisma } from '../prisma.js'
 
 class UsersService {
   createUser (id: string, options: Partial<User & { [key: string]: any }> = {}) {

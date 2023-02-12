@@ -1,9 +1,9 @@
 import { Router } from 'express'
 import jwt from 'jsonwebtoken'
 
-import { UsersService } from '@services/UsersService'
-import { DiscordRestUsersService } from '@services/DiscordRestUsersService'
-import { APIUser } from 'discord-api-types'
+import { UsersService } from '@services/UsersService.js'
+import { DiscordRestUsersService } from '@services/DiscordRestUsersService.js'
+import { APIUser } from 'discord.js'
 
 const router = Router()
 const SECRET = process.env.JWT_SECRET

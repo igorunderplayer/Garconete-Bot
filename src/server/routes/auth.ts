@@ -1,7 +1,7 @@
-import { DiscordRestUsersService } from '@services/DiscordRestUsersService'
+import { DiscordRestUsersService } from '@services/DiscordRestUsersService.js'
 import { Router } from 'express'
 import jwt from 'jsonwebtoken'
-import { prisma } from 'prisma'
+import { prisma } from '../../prisma.js'
 import { fetch } from 'undici'
 const router = Router()
 

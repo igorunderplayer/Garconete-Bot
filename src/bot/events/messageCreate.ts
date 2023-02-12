@@ -1,8 +1,8 @@
 import { ClientEvents } from 'discord.js'
-import GarconeteClient from '@structures/Client'
-import Event from '@structures/Event'
+import GarconeteClient from '@structures/Client.js'
+import Event from '@structures/Event.js'
 
-import * as commands from '../commands/MessageCommands'
+import * as commands from '../commands/MessageCommands/index.js'
 
 export default class MessageCreate extends Event<'messageCreate'> {
   trigger: keyof ClientEvents = 'messageCreate';

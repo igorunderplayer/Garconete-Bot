@@ -1,10 +1,10 @@
-import { CommandRun } from '@structures/Command'
+import { CommandRun } from '@structures/Command.js'
 
-import * as Hug from './hug'
-import * as Kiss from './kiss'
-import * as Marry from './marry'
+import * as Hug from './hug.js'
+import * as Kiss from './kiss.js'
+import * as Marry from './marry.js'
 
-import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
+import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder.js'
 
 export const command = new GarconeteCommandBuilder()
   .setName('action')

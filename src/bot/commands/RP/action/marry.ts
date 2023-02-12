@@ -1,8 +1,8 @@
-import { CommandRun } from '@structures/Command'
+import { CommandRun } from '@structures/Command.js'
 import { ButtonStyle, ComponentType, Message } from 'discord.js'
 import { ActionRowBuilder, ButtonBuilder } from '@discordjs/builders'
-import { UsersService } from '@services/UsersService'
-import GarconeteSubCommandBuilder from '@structures/GarconeteSubCommandBuilder'
+import { UsersService } from '@services/UsersService.js'
+import GarconeteSubCommandBuilder from '@structures/GarconeteSubCommandBuilder.js'
 
 export const command = new GarconeteSubCommandBuilder()
   .setName('marry')
@@ -49,7 +49,7 @@ async function run ({ client, interaction, t }: CommandRun) {
     await interaction.editReply(t('action', 'marry.otherAlreadMaried', interaction.locale))
   }
 
-  const row = new ActionRowBuilder()
+  const row = new ActionRowBuilder<ButtonBuilder>()
     .addComponents([
       new ButtonBuilder()
         .setStyle(ButtonStyle.Success)

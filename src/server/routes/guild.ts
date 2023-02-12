@@ -1,8 +1,8 @@
 import { Router } from 'express'
 
-import { GetGuildAutoRepliesController } from 'server/controllers/GetGuildAutoRepliesController'
-import { CreateGuildAutoReplyController } from 'server/controllers/CreateGuildAutoReplyController'
-import { DeleteGuildAutoReplyController } from 'server/controllers/DeleteGuildAutoReplyController'
+import { GetGuildAutoRepliesController } from '@server/controllers/GetGuildAutoRepliesController.js'
+import { CreateGuildAutoReplyController } from '@server/controllers/CreateGuildAutoReplyController.js'
+import { DeleteGuildAutoReplyController } from '@server/controllers/DeleteGuildAutoReplyController.js'
 
 const router = Router()
 

@@ -1,4 +1,4 @@
-import applyPlaceholders from './placeholders'
+import applyPlaceholders from './placeholders.js'
 import messages from '../messages.json'
 
 export default function translate (string: string, locale: string, obj?: object) {

@@ -1,5 +1,5 @@
-import { CommandRun } from '@structures/Command'
-import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
+import { CommandRun } from '@structures/Command.js'
+import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder.js'
 
 export const command = new GarconeteCommandBuilder()
   .setName('ping')

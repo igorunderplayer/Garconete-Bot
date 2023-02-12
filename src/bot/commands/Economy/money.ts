@@ -1,7 +1,7 @@
-import { CommandRun } from '@structures/Command'
-import { UsersService } from '@services/UsersService'
+import { CommandRun } from '@structures/Command.js'
+import { UsersService } from '@services/UsersService.js'
 
-import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder'
+import GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder.js'
 
 export const command = new GarconeteCommandBuilder()
   .setName('money')
