@@ -7,7 +7,7 @@ import * as routes from './routes/index.js'
 
 import bot from '@bot/index.js'
 
-export default class ServerStartup {
+class ServerStartup {
   app: express.Application
 
   async run () {
@@ -45,3 +45,5 @@ export default class ServerStartup {
     return this.app
   }
 }
+
+export default await new ServerStartup().run()

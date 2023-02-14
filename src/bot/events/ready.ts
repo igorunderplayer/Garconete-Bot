@@ -28,10 +28,6 @@ export default class Ready extends Event<'ready'> {
 
     this.client.blacklistedIds = new Set(blacklistedUsersIds)
 
-    await this.client.loadCommands({
-      ignoreCommandDirectory: ['MessageCommands']
-    })
-
     await this.client.deployCommands()
 
     this.client.user.setStatus('online')

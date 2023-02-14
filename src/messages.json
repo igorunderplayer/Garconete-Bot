@@ -42,7 +42,7 @@
         }
       },
       "kiss": {
-        "reply":  {
+        "reply": {
           "en-US": "%{author}% just kissed %{user}%",
           "pt-BR": "%{author}% acaba de beijar %{user}%"
         }
@@ -68,7 +68,7 @@
       "embed": {
         "title": {
           "en-US": "%{user}%'s avatar",
-        "pt-BR": "avatar de %{user}%"
+          "pt-BR": "avatar de %{user}%"
         }
       }
     },

@@ -1,17 +1,14 @@
-import { Client, ClientOptions, Collection } from 'discord.js'
+import { Client, ClientEvents, ClientOptions, Collection } from 'discord.js'
 import { request } from 'undici'
-import { readdir } from 'fs/promises'
-import { dirname, join } from 'path'
 
 import ClientPlugin from './ClientPlugin.js'
 import GarconeteCommandBuilder from './GarconeteCommandBuilder.js'
+import Event from './Event.js'
 
 type CommandsCollection = Collection<string, GarconeteCommandBuilder>
 
 export interface GarconeteOptions {
-  commandsPath: string
-  eventsPath: string
-  discordClientOptions: ClientOptions
+  discordOptions: ClientOptions
 }
 
 export default class GarconeteClient extends Client {
@@ -24,16 +21,12 @@ export default class GarconeteClient extends Client {
   private DEV_GUILDS_ID = process.env.DEV_GUILDS.split(' ')
 
   constructor (options: GarconeteOptions) {
-    super(options.discordClientOptions)
+    super(options.discordOptions)
 
     this.blacklistedIds = new Set()
     this.commands = new Collection()
     this.plugins = new Collection()
     this.request = request
-    this._options = {
-      commandsPath: options.commandsPath,
-      eventsPath: options.eventsPath
-    }
   }
 
   // Testing 2
@@ -56,36 +49,22 @@ export default class GarconeteClient extends Client {
     })
   }
 
-  async loadEvents () {
-    const files = await readdir(this._options.eventsPath)
-    for await (const file of files) {
-      console.log(dirname(file))
-      const { default: Event } = await import(join('..', '..', this._options.eventsPath, file))
-      const event = new Event(this)
-      this.on(event.trigger, (...data) => event.handle(data))
-    }
+  registerEvent<EventName extends keyof ClientEvents> (event: Event<EventName>) {
+    this.on(event.trigger, (...data: never) => event.handle(data))
+
+    return this
   }
 
-  async loadCommands ({ ignoreCommandDirectory = [] } = {}) {
-    const files = await readdir(this._options.commandsPath, { withFileTypes: true })
-    await Promise.all(
-      files.map(async file => {
-        if (
-          !file.isDirectory() ||
-          ignoreCommandDirectory.includes(file.name)
-        ) return
+  registerCommand (command: GarconeteCommandBuilder) {
+    this.commands.set(command.name, command)
 
-        const commandFiles = await readdir(join(this._options.commandsPath, file.name))
+    return this
+  }
 
-        for await (const commandFile of commandFiles) {
-          const { command } = await import(join(this._options.commandsPath, file.name, commandFile))
-
-          if (!command) continue
-
-          this.commands.set(command.name, command)
-        }
-      })
-    )
+  registerCommands (commands: GarconeteCommandBuilder[]) {
+    for (const command of commands) {
+      this.registerCommand(command)
+    }
 
     return this
   }

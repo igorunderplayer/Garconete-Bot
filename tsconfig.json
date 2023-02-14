@@ -3,7 +3,7 @@
     "resolveJsonModule": true,
     "moduleResolution": "nodenext",
     "target": "es2020",
-    "module": "es2020",
+    "module": "NodeNext",
     "lib": [
       "es6"
     ],

@@ -4,6 +4,7 @@
     "@babel/preset-modules"
   ],
   "plugins": [
+    "@babel/plugin-syntax-import-assertions",
     [
       "module-resolver",
       {

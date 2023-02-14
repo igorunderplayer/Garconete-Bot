@@ -1,5 +1,5 @@
 import applyPlaceholders from './placeholders.js'
-import messages from '../messages.json'
+import messages from '../messages.json' assert { type: 'json' }
 
 export default function translate (string: string, locale: string, obj?: object) {
   const phrase = string.split('.').reduce((acc, curr) => acc[curr], messages)

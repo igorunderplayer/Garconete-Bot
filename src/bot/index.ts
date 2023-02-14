@@ -1,18 +1,18 @@
 import Client from '@structures/Client.js'
 import { Options } from 'discord.js'
-import { join } from 'path'
+import InteractionCreate from './events/interactionCreate.js'
+import MessageCreate from './events/messageCreate.js'
+import Ready from './events/ready.js'
 
 import AutoReply from './plugins/AutoReply.js'
+
+import * as Commands from './commands/index.js'
 
 class BotStartup {
   client: Client
   async run () {
-    const basePath = './dist/bot' // temp
-
-    const client = new Client({
-      commandsPath: join(basePath, 'commands'),
-      eventsPath: join(basePath, 'events'),
-      discordClientOptions: {
+    this.client = new Client({
+      discordOptions: {
         intents: 513,
         makeCache: Options.cacheWithLimits({
           MessageManager: 50
@@ -20,14 +20,34 @@ class BotStartup {
       }
     })
 
-    await client.loadEvents()
-    client.setupPlugins([
-      new AutoReply(client)
+    this.registerAllEvents()
+    this.registerAllCommands()
+
+    this.client.setupPlugins([
+      new AutoReply(this.client)
     ])
 
-    await client.login(process.env.TOKEN)
+    await this.client.login(process.env.TOKEN)
 
     return this.client
+  }
+
+  registerAllEvents () {
+    this.client
+      .registerEvent(new Ready(this.client))
+      .registerEvent(new MessageCreate(this.client))
+      .registerEvent(new InteractionCreate(this.client))
+  }
+
+  registerAllCommands () {
+    this.client
+      .registerCommand(Commands.Action)
+      .registerCommand(Commands.Anime)
+      .registerCommand(Commands.Avatar)
+      .registerCommand(Commands.BotInfo)
+      .registerCommand(Commands.Daily)
+      .registerCommand(Commands.Money)
+      .registerCommand(Commands.Ping)
   }
 }
 
