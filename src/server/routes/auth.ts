@@ -1,6 +1,7 @@
 import { DiscordRestUsersService } from '@services/DiscordRestUsersService.js'
 import { Router } from 'express'
 import jwt from 'jsonwebtoken'
+import { prisma } from '../../prisma.js'
 import { fetch } from 'undici'
 const router = Router()
 
@@ -60,7 +61,6 @@ router.post('/login', async (req, res) => {
     }
   )
 
-  /*
   await prisma.user.update({
     where: {
       id: userData.id
@@ -69,7 +69,6 @@ router.post('/login', async (req, res) => {
       accessToken: data.access_token
     }
   })
-  */
 
   res.json({ message: 'Logged lol', data: userData, token })
 })

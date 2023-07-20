@@ -9,8 +9,6 @@ export const command = new GarconeteCommandBuilder()
   .setRunMethod(run)
 
 async function run ({ client, interaction, t }: CommandRun) {
-  return interaction.reply('desativado')
-
   await interaction.deferReply()
 
   const usersService = new UsersService()

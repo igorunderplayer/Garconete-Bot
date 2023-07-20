@@ -15,8 +15,6 @@ export const command = new GarconeteCommandBuilder()
   )
 
 async function run ({ client, interaction, t }: CommandRun) {
-  return interaction.reply('desativado')
-
   const usersService = new UsersService()
   const user = interaction.options.getUser('user') ?? interaction.user
   const { money } = await usersService.getUser(user.id)
