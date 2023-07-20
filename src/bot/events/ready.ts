@@ -13,7 +13,6 @@ export default class Ready extends Event<'ready'> {
 
   async handle () {
     console.log(`[Bot] Ready! | Logged as ${this.client.user.tag} (${this.client.user.id})`)
-    console.log('[Bot] Loading commands...')
 
     const blacklistUser = await prisma.user.findMany({
       where: {
@@ -27,8 +26,6 @@ export default class Ready extends Event<'ready'> {
     const blacklistedUsersIds = blacklistUser.map(user => user.id)
 
     this.client.blacklistedIds = new Set(blacklistedUsersIds)
-
-    await this.client.deployCommands()
 
     this.client.user.setStatus('online')
     this.client.user.setActivity({

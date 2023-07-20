@@ -1,7 +1,6 @@
 import { Client, ClientEvents, ClientOptions, Collection } from 'discord.js'
 import { request } from 'undici'
 
-import ClientPlugin from './ClientPlugin.js'
 import GarconeteCommandBuilder from './GarconeteCommandBuilder.js'
 import Event from './Event.js'
 
@@ -15,7 +14,6 @@ export default class GarconeteClient extends Client {
   _options: Partial<GarconeteOptions>
   blacklistedIds: Set<string>
   request: typeof request
-  plugins: Collection<string, ClientPlugin>
   commands: CommandsCollection
 
   private DEV_GUILDS_ID = process.env.DEV_GUILDS.split(' ')
@@ -25,28 +23,7 @@ export default class GarconeteClient extends Client {
 
     this.blacklistedIds = new Set()
     this.commands = new Collection()
-    this.plugins = new Collection()
     this.request = request
-  }
-
-  // Testing 2
-  setupPlugins (plugins: ClientPlugin[]) {
-    for (const plugin of plugins) {
-      this.plugins.set(plugin.identifier, plugin)
-      plugin.onSetup()
-    }
-
-    this.on('messageCreate', (message) => {
-      this.plugins.forEach((plugin) => {
-        plugin.onMessageCreate(message)
-      })
-    })
-
-    this.on('messageDelete', (message) => {
-      this.plugins.forEach((plugin) => {
-        plugin.onMessageDelete(message)
-      })
-    })
   }
 
   registerEvent<EventName extends keyof ClientEvents> (event: Event<EventName>) {

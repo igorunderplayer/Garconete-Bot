@@ -14,7 +14,7 @@ router.get('/teste', (req, res) => {
 router.post('/login', async (req, res) => {
   const { code } = req.body
   if (!code || typeof code !== 'string') {
-    res.status(400).json({ message: 'Invalid oauth code' })
+    return res.status(400).json({ message: 'Invalid oauth code' })
   }
 
   const users = new DiscordRestUsersService()
@@ -26,7 +26,7 @@ router.post('/login', async (req, res) => {
   encodedParams.set('client_secret', CLIENT_SECRET)
   encodedParams.set('grant_type', 'authorization_code')
   encodedParams.set('code', code)
-  encodedParams.set('redirect_uri', 'http://localhost:3000')
+  encodedParams.set('redirect_uri', req.headers.origin)
   encodedParams.set('scopes', 'identify')
 
   const url = 'https://discord.com/api/oauth2/token'
@@ -42,6 +42,7 @@ router.post('/login', async (req, res) => {
   const response = await fetch(url, options)
 
   if (response.status !== 200) {
+    console.log(await response.text())
     res.status(500).send('deu error!!!!')
     return
   }

@@ -1,46 +1,38 @@
-import Client from '@structures/Client.js'
-import { Options } from 'discord.js'
-import InteractionCreate from './events/interactionCreate.js'
-import MessageCreate from './events/messageCreate.js'
-import Ready from './events/ready.js'
-
-import AutoReply from './plugins/AutoReply.js'
+import { Collection, ShardingManager } from 'discord.js'
 
 import * as Commands from './commands/index.js'
 
+import type GarconeteClient from '@structures/Client.js'
+import type GarconeteCommandBuilder from '@structures/GarconeteCommandBuilder.js'
+
 class BotStartup {
-  client: Client
+  manager: ShardingManager
+  commands: Collection<string, GarconeteCommandBuilder>
   async run () {
-    this.client = new Client({
-      discordOptions: {
-        intents: 513,
-        makeCache: Options.cacheWithLimits({
-          MessageManager: 50
-        })
-      }
+    this.manager = new ShardingManager('dist/bot/bot.js', {
+      mode: 'worker',
+      token: process.env.TOKEN
     })
 
-    this.registerAllEvents()
-    this.registerAllCommands()
+    this.commands = new Collection()
 
-    this.client.setupPlugins([
-      new AutoReply(this.client)
-    ])
+    this.registerCommands()
 
-    await this.client.login(process.env.TOKEN)
+    const shardAmount = !process.env.SHARD_AMOUNT ? 'auto' : parseInt(process.env.SHARD_AMOUNT)
 
-    return this.client
+    await this.manager.spawn({
+      amount: shardAmount
+    })
+
+    this.manager.shards.first().eval((client: GarconeteClient) => {
+      client.once('ready', () => { client.deployCommands() })
+    }).then(() => console.log('Commands deploy called'))
+
+    return this
   }
 
-  registerAllEvents () {
-    this.client
-      .registerEvent(new Ready(this.client))
-      .registerEvent(new MessageCreate(this.client))
-      .registerEvent(new InteractionCreate(this.client))
-  }
-
-  registerAllCommands () {
-    this.client
+  registerCommands () {
+    this
       .registerCommand(Commands.Action)
       .registerCommand(Commands.Anime)
       .registerCommand(Commands.Avatar)
@@ -48,6 +40,12 @@ class BotStartup {
       .registerCommand(Commands.Daily)
       .registerCommand(Commands.Money)
       .registerCommand(Commands.Ping)
+  }
+
+  registerCommand (command: GarconeteCommandBuilder) {
+    this.commands.set(command.name, command)
+
+    return this
   }
 }
 

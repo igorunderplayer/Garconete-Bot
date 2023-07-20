@@ -24,6 +24,7 @@ export default class InteractionCreate extends Event<'interactionCreate'> {
       if (interaction.isChatInputCommand()) {
         try {
           const command = this.client.commands.get(interaction.commandName)
+          console.log(this.client.commands)
           await command.onRun({ client: this.client, interaction, t: (command, prop, locale, obj) => translate(`commands.${command}.${prop}`, locale, obj) })
         } catch (err) {
           const errorLogsChannel = await this.client.channels.fetch(process.env.DISCORD_ERROR_LOGS_CHANNEL) as TextChannel

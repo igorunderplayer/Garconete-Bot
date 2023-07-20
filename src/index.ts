@@ -1,3 +1,5 @@
+import 'dotenv/config'
+
 import bot from './bot/index.js'
 import server from './server/index.js'
 
