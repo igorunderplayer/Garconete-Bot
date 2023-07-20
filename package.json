@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node dist",
     "start:build": "yarn build && yarn start",
-    "build": "prisma migrate deploy && babel src --out-dir dist --include-dotfiles --copy-files --extensions \".ts,.js\" --no-copy-ignored",
+    "build": "babel src --out-dir dist --include-dotfiles --copy-files --extensions \".ts,.js\" --no-copy-ignored",
     "oldDev": "ts-node-dev -r tsconfig-paths/register --expose-gc --ignore-watch node_modules --transpile-only --exit-child --respawn src/index.ts",
     "dev": "nodemon --watch src --ext \"ts,json\" --exec \"yarn start:build\""
   },
